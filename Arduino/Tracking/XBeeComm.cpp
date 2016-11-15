@@ -106,11 +106,13 @@ bool XBeeComm::CheckRadio()
 void XBeeComm::SendMessage(const Message * msg)
 {
 	int dataLength = msg->getDataLength();
-	byte * data = (byte *)malloc(dataLength);
+	byte * data = new byte[dataLength];
 	msg->getData(data);
 
 	ZBTxRequest tx = ZBTxRequest(_groundAddress, data, dataLength);
 	_xbee.send(tx);
+	
+	delete data;
 }
 
 void XBeeComm::ReceiveMessage(Message * msg, uint16_t timeout = 100)

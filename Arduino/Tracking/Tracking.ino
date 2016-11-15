@@ -12,6 +12,8 @@
 Adafruit_BNO055 * bno;
 XBeeComm * xbee;
 
+char timestamp[] = { '0', '0', '0', '0',  '0', '0', '.', '0', '0', '0' };
+
 const int XBeeStatus = 22;
 const int IMUStatus = 23;
 const int GPSStatus = 24;
@@ -69,7 +71,6 @@ void setup()
 void loop()
 {
 	IMUMessage * imuMessage;
-	char timestamp[] = { '0', '0', '0', '0',  '0', '0', '.', '0', '0', '0' };
 
 	imu::Vector<3> accel = bno->getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
 	imu::Vector<3> euler = bno->getVector(Adafruit_BNO055::VECTOR_EULER);
@@ -77,7 +78,6 @@ void loop()
 	imuMessage = new IMUMessage(timestamp, accel, euler);
 	xbee->SendMessage(imuMessage);
 	delete imuMessage;
-
 
 	delay(1000);
 }
