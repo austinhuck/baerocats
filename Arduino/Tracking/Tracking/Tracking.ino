@@ -1,119 +1,86 @@
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
+#include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
+#include <stdint.h>
+#include <Wire.h>
 
-Adafruit_BNO055 bno = Adafruit_BNO055(55);
+#include "IMUMessage.h"
+#include "XBeeComm.h"
+
+
+
+Adafruit_BNO055 * bno;
+XBeeComm * xbee;
 
 const int XBeeStatus = 22;
 const int IMUStatus = 23;
 const int GPSStatus = 24;
 const int GPSFix = 7;
-const byte SerialLow[] = { 0x41, 0x5A, 0xE1, 0xC1 };
-
-bool valid = false;
-int remainingBytes = -1;
-int receiveBufferIndex = 0;
-byte receiveBuffer[256];
-
-struct XBeeApiFrame
-{
-	int Length;
-	byte Data[];
-	byte Checksum;
-};
 
 void setup()
 {
+	// Configure pins.
 	pinMode(XBeeStatus, OUTPUT);
 	pinMode(IMUStatus, OUTPUT);
 	pinMode(GPSStatus, OUTPUT);
 	pinMode(GPSFix, INPUT);
-
-	int count;
-	byte data[24];
-
+	
 	// Prepare USB Debug Serial
 	Serial.begin(9600);
 
-	// XBee Serial
+	// XBee Serial (Serial1)
 	Serial1.begin(57600);
+	xbee = new XBeeComm(Serial1);
 
-	// Test XBee communcation by entering AT command mode.
-	while (!Serial);
-
-	byte atserial[] = { 0x7E, 0x00, 0x04, 0x08, 0x01, 0x53, 0x4C, 0x57 };
-	Serial.print("Sending Bytes: ");
-	Serial.write(atserial, 8);
-	Serial.println();
-	Serial1.write(atserial, 8);
-	while (Serial1.available() == false);
-	count = Serial1.readBytes(data, 24);
-	Serial.print("Received Bytes: ");
-	for (int i = 0; i < count; i++)
+	if (xbee->CheckRadio())
 	{
-		Serial.print(data[i], HEX);
+		digitalWrite(XBeeStatus, HIGH);
 	}
-	Serial.println();
-	while (true);
-	digitalWrite(XBeeStatus, HIGH);
+	else
+	{
+		while (true)
+		{
+			digitalWrite(XBeeStatus, !digitalRead(XBeeStatus));
+			delay(500);
+		}
+	}
 
-	// Begin IMU Communication
-	if (bno.begin())
+	// Prepare IMU Communcation
+	bno = new Adafruit_BNO055(55);
+
+	if (bno->begin())
 	{
 		digitalWrite(IMUStatus, HIGH);
+	}
+	else
+	{
+		while (true)
+		{
+			digitalWrite(IMUStatus, !digitalRead(IMUStatus));
+			delay(500);
+		}
 	}
 
 	// Begin GPS Communication
 	//Serial2.begin(9600);
-	//digitalRead(GPSFix);
-
-	delay(1000);
-
-	bno.setExtCrystalUse(true);
+	//digitalRead(GPSFix);	
 }
 
 void loop()
 {
-	/* Get a new sensor event */
-	sensors_event_t event;
-	bno.getEvent(&event);
+	IMUMessage * imuMessage;
+	char timestamp[] = { '0', '0', '0', '0',  '0', '0', '.', '0', '0', '0' };
 
-	/* Display the floating point data */
-	Serial.print("X: ");
-	Serial.print(event.orientation.x, 4);
-	Serial.print("\tY: ");
-	Serial.print(event.orientation.y, 4);
-	Serial.print("\tZ: ");
-	Serial.print(event.orientation.z, 4);
-	Serial.println("");
+	imu::Vector<3> accel = bno->getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+	imu::Vector<3> euler = bno->getVector(Adafruit_BNO055::VECTOR_EULER);
+
+	imuMessage = new IMUMessage(timestamp, accel, euler);
+	xbee->SendMessage(imuMessage);
+	delete imuMessage;
+
+
+	delay(1000);
 }
 
 
 
-void receive()
-{
-	int count;
-	XBeeApiFrame frame;
-
-	if (Serial1.available())
-	{
-		// If the receiver buffer index has content, then we're working on building a message.
-		if (receiveBufferIndex != -1)
-		{
-			count = Serial1.readBytesUntil(0x7E, receiveBuffer + receiveBufferIndex, 256 - receiveBufferIndex);
-
-
-
-		}
-		else
-		{
-			count = Serial1.readBytesUntil(0x7E, receiveBuffer, 256);
-
-			
-
-		}
-
-
-	}
-}
