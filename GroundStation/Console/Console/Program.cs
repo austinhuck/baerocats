@@ -1,36 +1,95 @@
-﻿using System;
-using System.Threading.Tasks;
-using XBee;
-using XBee.Frames;
-using XBee.Frames.AtCommands;
+﻿using Baerocats.XBee;
+using System;
+using System.IO.Ports;
+using System.Threading;
 
-namespace Console
+namespace ConsoleTest
 {
     class Program
     {
+        private static XBeeComm _xbee;
+
+        [STAThread]
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Initializing on COM9");
+            // Find available ports
+            string[] portNames = SerialPort.GetPortNames();
 
-            XBeeController controller = new XBeeController("COM9", 9600);
+            Console.WriteLine("Select an available port by index:");
+            Console.WriteLine();
 
-            controller.NodeDiscovered += (s, a) =>
+            for (int i = 0; i < portNames.Length; i++)
             {
-                System.Console.WriteLine("Discovered {0}", a.Name);
+                Console.WriteLine("{0}: {1}", i, portNames[i]);
+            }
 
-                a.Node.SetInputOutputConfigurationAsync(InputOutputChannel.Channel2, InputOutputConfiguration.DigitalIn).Wait();
-                a.Node.SetInputOutputConfigurationAsync(InputOutputChannel.Channel3, InputOutputConfiguration.AnalogIn).Wait();
+            Console.WriteLine();
+            Console.Write("Index -> ");
+            string line = Console.ReadLine();
+            Console.WriteLine();
+            int value;
 
-                a.Node.SetChangeDetectionChannelsAsync(DigitalSampleChannels.Input2).Wait();
+            while (!int.TryParse(line, out value) || value < 0 || value > portNames.Length)
+            {
+                Console.WriteLine("Invalid Input");
+                Console.Write("Index -> ");
+                line = Console.ReadLine();
+                Console.WriteLine();
+            }
 
-                a.Node.SetSampleRateAsync(TimeSpan.FromSeconds(5)).Wait();
+            Console.WriteLine("Initializing on {0}", portNames[value]);
 
-                a.Node.SampleReceived += (node, sample) => System.Console.WriteLine("Sample recieved: {0}", sample);
-            };  
+            try
+            {
+                // Create the XBeeComm objects which handles all XBee communcation.
+                _xbee = new XBeeComm(portNames[value]);
 
-            controller.OpenAsync().Wait();
-            controller.DiscoverNetworkAsync().Wait();
+                // Register for the message received event.
+                _xbee.MessageReceived += XBeeMessageReceived;
 
+                _xbee.Open();
+
+                Console.WriteLine("XBee connected on {0}", portNames[value]);
+
+                // Keep the console open forever
+                new ManualResetEvent(false).WaitOne();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                // Finally, ensure the serial connection has been closed.
+                if (_xbee != null)
+                {
+                    _xbee.Close();
+                }
+            }
+        }
+
+        private static void XBeeMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            // Process message by type here.
+            if (e.Message is IMUMessage)
+            {
+                IMUMessage msg = (IMUMessage)e.Message;
+                Console.WriteLine("IMU Message: ({0}) ({1})",
+                    msg.Acceleration.ToString(),
+                    msg.Euler.ToString());
+            }
+            else if (e.Message is GPSMessage)
+            {
+                GPSMessage msg = (GPSMessage)e.Message;
+                Console.WriteLine("GPS Message: Valid[{0}] Lat[{1}] Long[{2}]",
+                    msg.Valid.ToString(),
+                    msg.LatitudeDegrees,
+                    msg.LongitudeDegress);
+            }
+            else
+            {
+                
+            }
         }
     }
 }
