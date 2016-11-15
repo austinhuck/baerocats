@@ -3,6 +3,10 @@
 using NETMF.OpenSource.XBee;
 using NETMF.OpenSource.XBee.Api;
 using System;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Timers;
+using System.Windows.Media.Media3D;
 
 namespace Baerocats.XBee
 {
@@ -11,11 +15,24 @@ namespace Baerocats.XBee
     /// </summary>
     public class XBeeComm
     {
+        /// <summary>
+        /// Gets a list of available serial ports.
+        /// </summary>
+        /// <returns></returns>
+        public static List<String> GetPortNames()
+        {
+            List<String> portNames = new List<String>(SerialPort.GetPortNames());
+            portNames.Insert(0, "SIM");
+            return portNames;
+        }
+
         private const ulong EXT_1_SERIAL= 0x0013A200415AE1C1;
         private const ulong EXT_2_SERIAL = 0x0013A200412692E7;
         private const ulong GROUND_SERIAL = 0x0013A200412692E8;
-
-        private XBeeApi _xbee;
+        private Random _rand = new Random(DateTime.Now.Millisecond);
+        private bool _simSwap = true;
+        private XBeeApi _xbee = null;
+        private Timer _xbeeSim = null;
         private XBeeAddress64 _ext1Address = new XBeeAddress64(EXT_1_SERIAL);
 
         /// <summary>
@@ -25,8 +42,16 @@ namespace Baerocats.XBee
         /// <param name="port">The name of the serial port to connect on.</param>
         public XBeeComm(string port)
         {
-            _xbee = new XBeeApi(port, 57600);
-            _xbee.DataReceived += XbeeDataReceived;
+            if (port == "SIM")
+            {
+                _xbeeSim = new Timer(1000);
+                _xbeeSim.Elapsed += XBeeSimElapsed;
+            }
+            else
+            {
+                _xbee = new XBeeApi(port, 57600);
+                _xbee.DataReceived += XbeeDataReceived;
+            }
         }
 
         /// <summary>
@@ -34,7 +59,14 @@ namespace Baerocats.XBee
         /// </summary>
         public void Open()
         {
-            _xbee.Open();
+            if (_xbee == null)
+            {
+                _xbeeSim.Start();
+            }
+            else
+            {
+                _xbee.Open();
+            }
         }
 
         /// <summary>
@@ -42,7 +74,14 @@ namespace Baerocats.XBee
         /// </summary>
         public void Close()
         {
-            _xbee.Close();
+            if (_xbee == null)
+            {
+                _xbeeSim.Stop();
+            }
+            else
+            {
+                _xbee.Close();
+            }
         }
 
         /// <summary>
@@ -55,7 +94,10 @@ namespace Baerocats.XBee
             byte[] data = new byte[dataLength];
             msg.GetData(data);
 
-            _xbee.Send(data);
+            if (_xbee != null)
+            {
+                _xbee.Send(data);
+            }
         }
 
         /// <summary>
@@ -93,6 +135,36 @@ namespace Baerocats.XBee
                 }
                 
                 handler(this, new MessageReceivedEventArgs(msg));
+            }
+        }
+
+        private void XBeeSimElapsed(object sender, ElapsedEventArgs e)
+        {
+            EventHandler<MessageReceivedEventArgs> handler = MessageReceived;
+
+            if (handler != null)
+            {
+                Message msg = null;
+                if (_simSwap)
+                {
+                    msg = new IMUMessage("000000.000",
+                        new Vector3D(
+                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
+                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
+                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1)),
+                        new Vector3D(
+                            _rand.NextDouble() * 360,
+                            _rand.NextDouble() * 360,
+                            _rand.NextDouble() * 360));
+                }
+                else
+                {
+                    msg = new GPSMessage("000000.000", true, 39.1309584, -84.5200646);
+                }
+
+                handler(this, new MessageReceivedEventArgs(msg));
+
+                _simSwap = !_simSwap;
             }
         }
     }

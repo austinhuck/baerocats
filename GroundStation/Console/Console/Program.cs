@@ -1,5 +1,6 @@
 ﻿using Baerocats.XBee;
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 
@@ -13,12 +14,12 @@ namespace ConsoleTest
         static void Main(string[] args)
         {
             // Find available ports
-            string[] portNames = SerialPort.GetPortNames();
+            List<String> portNames = XBeeComm.GetPortNames();
 
             Console.WriteLine("Select an available port by index:");
             Console.WriteLine();
 
-            for (int i = 0; i < portNames.Length; i++)
+            for (int i = 0; i < portNames.Count; i++)
             {
                 Console.WriteLine("{0}: {1}", i, portNames[i]);
             }
@@ -29,7 +30,7 @@ namespace ConsoleTest
             Console.WriteLine();
             int value;
 
-            while (!int.TryParse(line, out value) || value < 0 || value > portNames.Length)
+            while (!int.TryParse(line, out value) || value < 0 || value > portNames.Count)
             {
                 Console.WriteLine("Invalid Input");
                 Console.Write("Index -> ");
