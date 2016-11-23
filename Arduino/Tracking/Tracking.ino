@@ -170,6 +170,7 @@ void setup()
 	// Prepare IMU Communcation
 	bno = new Adafruit_BNO055(55);
 
+	// Begin in default mode (NDOF)
 	if (bno->begin())
 	{
 		digitalWrite(IMUStatus, HIGH);
