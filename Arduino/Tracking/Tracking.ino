@@ -10,6 +10,11 @@
 #include "GPSMessage.h"
 #include "XBeeComm.h"
 
+// !!! TRANSMIT_DELAY must be greater than and 
+// a multiple of SAMPLE_DELAY
+#define SAMPLE_DELAY 200
+#define TRANSMIT_DELAY 1000
+
 unsigned long gpsTime = 0;
 unsigned long lastSyncTime = 0;
 unsigned long lastSendTime = 0;
@@ -242,9 +247,9 @@ void loop()
 		}
 	}
 
-	// Every 200ms (5Hz) save a sample
+	// Every SAMPLE_DELAY save a sample
 	unsigned long currentTime = millis();
-	if (currentTime - lastSampleTime > 50)
+	if (currentTime - lastSampleTime >= SAMPLE_DELAY)
 	{
 		lastSampleTime = currentTime;
 
@@ -281,8 +286,8 @@ void loop()
 			//Serial.println(millis() - writeStart);
 		}
 
-		// Every second, send out the current data.
-		if (currentTime - lastSendTime > 1000)
+		// Every TRANSMIT_DELAY, send out the current data.
+		if (currentTime - lastSendTime > TRANSMIT_DELAY)
 		{
 			// Statistics: 5-10ms
 
