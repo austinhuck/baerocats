@@ -5,6 +5,7 @@ using NETMF.OpenSource.XBee.Api;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media.Media3D;
 
@@ -101,6 +102,39 @@ namespace Baerocats.XBee
         }
 
         /// <summary>
+        /// Returns the signal strength of the last received message in units of -dB.
+        /// </summary>
+        public async Task<ushort?> GetSignalStrength()
+        {
+            if (_xbee != null)
+            {
+                Task<ushort?> atTask = new Task<ushort?>(() =>
+                {
+                    AtCommand cmd = _xbee.CreateRequest((ushort)NETMF.OpenSource.XBee.Api.Zigbee.AtCmd.ReceivedSignalStrength);
+                    AsyncSendResult result = _xbee.BeginSend(cmd, new AtResponseFilter(cmd), 2000);
+                    XBeeResponse[] responses = _xbee.EndReceive(result);
+
+                    if (responses.Length == 0)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return (ushort)((AtResponse)responses[0]).Value[0];
+                    }
+                });
+
+                atTask.Start(); 
+
+                return await atTask;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Ignore
         /// </summary>
         /// <returns></returns>
@@ -129,6 +163,9 @@ namespace Baerocats.XBee
                     case IMUMessage.IMU_MESSAGE_ID:
                         msg = new IMUMessage(data);
                         break;
+                    case GPSMessage.GPS_MESSAGE_ID:
+                        msg = new GPSMessage(data);
+                        break;
                     default:
                         msg = new Message(data);
                         break;
@@ -147,19 +184,20 @@ namespace Baerocats.XBee
                 Message msg = null;
                 if (_simSwap)
                 {
-                    msg = new IMUMessage("000000.000",
+                    msg = new IMUMessage(0,
                         new Vector3D(
                             _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
                             _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
                             _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1)),
-                        new Vector3D(
-                            _rand.NextDouble() * 360,
-                            _rand.NextDouble() * 360,
-                            _rand.NextDouble() * 360));
+                        new Quaternion(
+                            _rand.NextDouble(),
+                            _rand.NextDouble(),
+                            _rand.NextDouble(),
+                            _rand.NextDouble()));
                 }
                 else
                 {
-                    msg = new GPSMessage("000000.000", true, 39.1309584, -84.5200646);
+                    msg = new GPSMessage(0, true, 39.1309584, -84.5200646, 800.12);
                 }
 
                 handler(this, new MessageReceivedEventArgs(msg));

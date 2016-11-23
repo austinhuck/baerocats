@@ -1,7 +1,7 @@
 #include "Message.h"
 
 
-Message::Message(uint16_t id, char * timestamp)
+Message::Message(uint16_t id, uint32_t timestamp)
 {
 	_id = id;
 	_timestamp = timestamp;
@@ -19,5 +19,5 @@ int Message::getDataLength() const
 void Message::getData(byte * buffer) const
 {
 	memcpy(buffer, &_id, 2);
-	memcpy(buffer + 2, _timestamp, 10);
+	memcpy(buffer + 2, &_timestamp, 4);
 }

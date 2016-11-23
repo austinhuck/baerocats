@@ -6,13 +6,13 @@
 class Message
 {
 public:
-	Message(uint16_t id, char * timestamp);
+	Message(uint16_t id, uint32_t timestamp);
 	~Message();
 	virtual int getDataLength() const;
 	virtual void getData(byte * buffer) const;
 private:
 	uint16_t _id;
-	char * _timestamp;
+	uint32_t _timestamp;
 };
 
 #endif

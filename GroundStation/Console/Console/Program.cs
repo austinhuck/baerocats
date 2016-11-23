@@ -1,14 +1,17 @@
 ﻿using Baerocats.XBee;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleTest
 {
     class Program
     {
         private static XBeeComm _xbee;
+        private static Timer _signalTimer;
 
         [STAThread]
         static void Main(string[] args)
@@ -40,6 +43,12 @@ namespace ConsoleTest
 
             Console.WriteLine("Initializing on {0}", portNames[value]);
 
+            //FileStream filestream = new FileStream("out.txt", FileMode.Create);
+            //var streamwriter = new StreamWriter(filestream);
+            //streamwriter.AutoFlush = true;
+            //Console.SetOut(streamwriter);
+            //Console.SetError(streamwriter);
+
             try
             {
                 // Create the XBeeComm objects which handles all XBee communcation.
@@ -51,6 +60,11 @@ namespace ConsoleTest
                 _xbee.Open();
 
                 Console.WriteLine("XBee connected on {0}", portNames[value]);
+
+                _signalTimer = new Timer(new TimerCallback((obj) =>
+                {
+                    GetSignalStrength();
+                }), null, 2000, 2000);
 
                 // Keep the console open forever
                 new ManualResetEvent(false).WaitOne();
@@ -69,23 +83,33 @@ namespace ConsoleTest
             }
         }
 
+        private static async void GetSignalStrength()
+        {
+            ushort? signalStrength = await _xbee.GetSignalStrength();
+            Console.WriteLine("Signal Strength: -{0}dB", signalStrength);
+        }
+
         private static void XBeeMessageReceived(object sender, MessageReceivedEventArgs e)
         {
+            Console.Write(e.Message.Timestamp);
+            Console.Write(" - ");
+
             // Process message by type here.
             if (e.Message is IMUMessage)
             {
                 IMUMessage msg = (IMUMessage)e.Message;
                 Console.WriteLine("IMU Message: ({0}) ({1})",
                     msg.Acceleration.ToString(),
-                    msg.Euler.ToString());
+                    msg.Orientation.ToString());
             }
             else if (e.Message is GPSMessage)
             {
                 GPSMessage msg = (GPSMessage)e.Message;
-                Console.WriteLine("GPS Message: Valid[{0}] Lat[{1}] Long[{2}]",
+                Console.WriteLine("GPS Message: Valid[{0}] Lat[{1}] Long[{2}] Alt[{3}]",
                     msg.Valid.ToString(),
                     msg.LatitudeDegrees,
-                    msg.LongitudeDegress);
+                    msg.LongitudeDegress, 
+                    msg.Altitude);
             }
             else
             {

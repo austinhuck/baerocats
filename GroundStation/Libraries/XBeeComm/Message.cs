@@ -5,7 +5,7 @@ namespace Baerocats.XBee
     public class Message
     {
         private short _id;
-        private string _timestamp;
+        private uint _timestamp;
 
         public short Id
         {
@@ -15,7 +15,7 @@ namespace Baerocats.XBee
             }
         }
 
-        public string Timestamp
+        public uint Timestamp
         {
             get
             {
@@ -23,7 +23,7 @@ namespace Baerocats.XBee
             }
         }
 
-        public Message(short id, string timestamp)
+        public Message(short id, uint timestamp)
         {
             _id = id;
             _timestamp = timestamp;
@@ -38,13 +38,13 @@ namespace Baerocats.XBee
 
         internal virtual int GetDataLength()
         {
-            return 12; // ID (2 bytes) + Timestamp (10 Characters)
+            return 12; // ID (2 bytes) + Timestamp (4 Bytes)
         }
 
         internal virtual void GetData(byte[] buffer)
         {
             Array.Copy(BitConverter.GetBytes(_id), 0, buffer, 0, 2);
-            Array.Copy(_timestamp.ToCharArray(), 0, buffer, 2, 10);   
+            Array.Copy(BitConverter.GetBytes(_timestamp), 0, buffer, 2, 4);   
         }
 
         internal static short GetId(byte[] data)
@@ -52,11 +52,9 @@ namespace Baerocats.XBee
             return BitConverter.ToInt16(data, 0);
         }
 
-        internal static string GetTimestamp(byte[] data)
+        internal static uint GetTimestamp(byte[] data)
         {
-            char[] temp = new char[10];
-            Array.Copy(data, 2, temp, 0, 10);
-            return new string(temp);
+            return BitConverter.ToUInt32(data, 2);
         }
     }
 }

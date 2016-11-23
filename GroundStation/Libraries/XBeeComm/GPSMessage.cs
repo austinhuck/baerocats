@@ -10,15 +10,16 @@ namespace Baerocats.XBee
     {
         public const int GPS_MESSAGE_ID = 2;
 
-        private double _latDeg;
-        private double _longDeg;
+        private double _altitude;
+        private double _latitude;
+        private double _longitude;
         private bool _valid;
 
         public double LatitudeDegrees
         {
             get
             {
-                return _latDeg;
+                return _latitude;
             }
         }
 
@@ -26,7 +27,7 @@ namespace Baerocats.XBee
         {
             get
             {
-                return _longDeg;
+                return _longitude;
             }
         }
 
@@ -38,39 +39,43 @@ namespace Baerocats.XBee
             }
         }
 
-        public GPSMessage(string timestamp, bool valid,  double latDeg, double longDeg)
+        public double Altitude
+        {
+            get
+            {
+                return _altitude;
+            }
+
+            set
+            {
+                _altitude = value;
+            }
+        }
+
+        public GPSMessage(uint timestamp, bool valid,  double latitude, double longitude, double altitude)
             : base(GPS_MESSAGE_ID, timestamp)
         {
             _valid = valid;
-            _latDeg = latDeg;
-            _longDeg = longDeg;
+            _latitude = latitude;
+            _longitude = longitude;
+            _altitude = altitude;
         }
 
         public GPSMessage(byte[] data)
             : base (data)
         {   
-            // ID-Timestamp,V,--Latitude-,--Longitude-
-            // 00194509.000,A,4042.6142,N,07400.4168,W
+            // ID-TimestampVLTLGAL
             int readOffset = base.GetDataLength();
 
-            char valid = ASCIIEncoding.ASCII.GetChars(data, readOffset + 1, 1)[0];
-            string latitude = ASCIIEncoding.ASCII.GetString(data, readOffset + 3, 9);
-            char ns = ASCIIEncoding.ASCII.GetChars(data, readOffset + 13, 1)[0];
-            string longitude = ASCIIEncoding.ASCII.GetString(data, readOffset + 15, 10);
-            char ew = ASCIIEncoding.ASCII.GetChars(data, readOffset + 26, 1)[0];
-
-            _valid = (valid == 'A');
-
-            _latDeg = ((ns == 'N') ? 1 : -1) * 
-                (Double.Parse(latitude.Substring(0, 2)) + Double.Parse(latitude.Substring(2)) / 60);
-
-            _longDeg = ((ew == 'E') ? 1 : -1) * 
-                (Double.Parse(longitude.Substring(0, 3)) + Double.Parse(longitude.Substring(3)) / 60);
+            _valid = BitConverter.ToBoolean(data, readOffset);
+            _latitude = BitConverter.ToSingle(data, readOffset + 1);
+            _longitude = BitConverter.ToSingle(data, readOffset + 5);
+            _altitude = BitConverter.ToSingle(data, readOffset + 9);
         }
 
         internal override int GetDataLength()
         {
-            return 27 + base.GetDataLength();
+            return 13 + base.GetDataLength();
         }
 
         internal override void GetData(byte[] buffer)
@@ -80,29 +85,10 @@ namespace Baerocats.XBee
 
             int insertOffset = base.GetDataLength();
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append(',');
-            sb.Append(_valid ? 'A' : 'V');
-            sb.Append(',');
-
-            double lat = Math.Abs(_latDeg);
-            int latDegrees = (int)Math.Floor(lat);
-            string latitude = latDegrees.ToString("D2") + ((lat - latDegrees) * 60).ToString("F4").PadLeft(7, '0');
-
-            sb.Append(latitude);
-            sb.Append(',');
-            sb.Append(_latDeg < 0 ? 'S' : 'N');
-            sb.Append(',');
-
-            double lng = Math.Abs(_longDeg);
-            int lngDegrees = (int)Math.Floor(lng);
-            string longitude = lngDegrees.ToString("D3") + ((lng - lngDegrees) * 60).ToString("F4").PadLeft(7, '0');
-
-            sb.Append(longitude);
-            sb.Append(',');
-            sb.Append(_longDeg < 0 ? 'E' : 'W');
-
-            Array.Copy(ASCIIEncoding.ASCII.GetBytes(sb.ToString()), 0, buffer, insertOffset, 27);
+            Array.Copy(BitConverter.GetBytes(_valid), 0, buffer, insertOffset, 1);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_latitude)), 0, buffer, insertOffset + 1, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_longitude)), 0, buffer, insertOffset + 5, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_altitude)), 0, buffer, insertOffset + 9, 4);        
         }
     }
 }

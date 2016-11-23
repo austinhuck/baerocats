@@ -9,7 +9,7 @@ namespace Baerocats.XBee
         internal const short IMU_MESSAGE_ID = 1;
 
         Vector3D _acceleration;
-        Vector3D _euler;
+        Quaternion _orientation;
 
         public Vector3D Acceleration
         {
@@ -19,19 +19,19 @@ namespace Baerocats.XBee
             }
         }
 
-        public Vector3D Euler
+        public Quaternion Orientation
         {
             get
             {
-                return _euler;
+                return _orientation;
             }
         }
 
-        public IMUMessage(string timestamp, Vector3D acceleration, Vector3D euler)
+        public IMUMessage(uint timestamp, Vector3D acceleration, Quaternion ortientation)
             : base(IMU_MESSAGE_ID, timestamp)
         {
             _acceleration = acceleration;
-            _euler = euler;
+            _orientation = ortientation;
         }
 
         public IMUMessage(byte[] data)
@@ -45,16 +45,17 @@ namespace Baerocats.XBee
                 BitConverter.ToSingle(data, readOffset + 8)
                 );
 
-            _euler = new Vector3D(
+            _orientation = new Quaternion(
                 BitConverter.ToSingle(data, readOffset + 12),
                 BitConverter.ToSingle(data, readOffset + 16),
-                BitConverter.ToSingle(data, readOffset + 20)
+                BitConverter.ToSingle(data, readOffset + 20),
+                BitConverter.ToSingle(data, readOffset + 24)
                 );
         }
 
         internal override int GetDataLength()
         {
-            return 24 + base.GetDataLength();
+            return 28 + base.GetDataLength();
         }
 
         internal override void GetData(byte[] buffer)
@@ -67,9 +68,10 @@ namespace Baerocats.XBee
             Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_acceleration.X)), 0, buffer, insertOffset, 4);
             Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_acceleration.Y)), 0, buffer, insertOffset + 4, 4);
             Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_acceleration.Z)), 0, buffer, insertOffset + 8, 4);
-            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_euler.X)), 0, buffer, insertOffset + 12, 4);
-            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_euler.Y)), 0, buffer, insertOffset + 16, 4);
-            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_euler.Z)), 0, buffer, insertOffset + 20, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_orientation.W)), 0, buffer, insertOffset + 12, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_orientation.X)), 0, buffer, insertOffset + 16, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_orientation.Y)), 0, buffer, insertOffset + 20, 4);
+            Array.Copy(BitConverter.GetBytes(Convert.ToSingle(_orientation.Z)), 0, buffer, insertOffset + 24, 4);
         }
     }
 }
