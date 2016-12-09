@@ -4,14 +4,18 @@
 #include <utility/imumaths.h>
 #include <stdint.h>
 #include <Wire.h>
-#include <extEEPROM.h>
+#include <SPI.h>
+#include <SD.h>
+
 
 #include "IMUMessage.h"
 #include "GPSMessage.h"
 #include "XBeeComm.h"
+File IMUDataFile;
 
 // !!! TRANSMIT_DELAY must be greater than and 
 // a multiple of SAMPLE_DELAY
+String DataFileName="FullScaleTest1.txt";
 #define SAMPLE_DELAY 200
 #define TRANSMIT_DELAY 1000
 
@@ -23,13 +27,12 @@ unsigned long lastSampleTime = 0;
 Adafruit_GPS * gps;
 Adafruit_BNO055 * bno;
 XBeeComm * xbee;
-extEEPROM * eep;
 
 // Pin Assignments
 const int XBeeStatus = 22;
 const int IMUStatus = 23;
 const int GPSStatus = 24;
-const int EEPStatus = 25;
+const int SDStatus = 25;
 const int Ground = 7;
 const int RecordStatus = 6;
 const int ModeSelect = 10;
@@ -56,21 +59,19 @@ void setup()
 	delay(100);
 
 	Serial.begin(115200);
-
-	//extEEPROM setup
-	eep = new extEEPROM(kbits_256, 1, 64);
-	uint8_t eepStatus = eep->begin(twiClock400kHz);      //go fast!
-	if (eepStatus)
+  Serial.print("Initializing SD card...");
+	//SD setup
+	if (!SD.begin(53))
 	{
-		Serial.print("Error with EEPROM - ");
-		Serial.println(eepStatus);
+		Serial.print("SD Initialization failed on pin 53");
 
 		while (true)
 		{
-			digitalWrite(EEPStatus, !digitalRead(EEPStatus));
+			digitalWrite(SDStatus, !digitalRead(SDStatus));
 			delay(500);
 		}
 	}
+  Serial.println("initialization done.");
 
 	if (digitalRead(ModeSelect))
 	{
@@ -114,42 +115,14 @@ void setup()
 			float quatZ;
 
 			Serial.println("Timestamp, Accel X, Accel Y, Accel Z, Quat W, Quat X, Quat Y, Quat Z");
-
+      IMUDataFile = SD.open(DataFileName);
 			Address = 0;
 
-			while (Address + 31 <= MaxAddress)
+			while (IMUDataFile.available())
 			{
-				byte data[32];
-
-				eep->read(Address, data, 32);
-
-				Address += 32;
-
-				memcpy(&timestamp, data, 4);
-				memcpy(&accelX, data + 4, 4);
-				memcpy(&accelY, data + 8, 4);
-				memcpy(&accelZ, data + 12, 4);
-				memcpy(&quatW, data + 16, 4);
-				memcpy(&quatX, data + 20, 4);
-				memcpy(&quatY, data + 24, 4);
-				memcpy(&quatZ, data + 28, 4);
-
-				Serial.print(timestamp);
-				Serial.print(',');
-				Serial.print(accelX);
-				Serial.print(',');
-				Serial.print(accelY);
-				Serial.print(',');
-				Serial.print(accelZ);
-				Serial.print(',');
-				Serial.print(quatW);
-				Serial.print(',');
-				Serial.print(quatX);
-				Serial.print(',');
-				Serial.print(quatY);
-				Serial.print(',');
-				Serial.println(quatZ);
+				Serial.write(IMUDataFile.read());
 			}
+      IMUDataFile.close();
 		}
 	}
 	
@@ -257,34 +230,26 @@ void loop()
 		imu::Quaternion quat = bno->getQuat();
 
 		// save data sample
-		if ((Address + 31) <= MaxAddress)
-		{
-			// Statistics: 12-16ms
-
-			//unsigned long writeStart = millis();
-
-			//Serial.print("Sample Address [");
-			//Serial.print(Address);
-			//Serial.print("] ");
-
-			byte data[32];
-
-			memcpy(data, &currentTime, 4);
-			memcpy(data + 4, &accel.x(), 4);
-			memcpy(data + 8, &accel.y(), 4);
-			memcpy(data + 12, &accel.z(), 4);
-			memcpy(data + 16, &quat.w(), 4);
-			memcpy(data + 20, &quat.x(), 4);
-			memcpy(data + 24, &quat.y(), 4);
-			memcpy(data + 28, &quat.z(), 4);
-
-			eep->write(Address, data, 32);
-
-			Address += 32;
-
-			//Serial.print("Time to Write: ");
-			//Serial.println(millis() - writeStart);
-		}
+   
+    // open the file. note that only one file can be open at a time,
+    // so you have to close this one before opening another.
+    IMUDataFile = SD.open(DataFileName, FILE_WRITE);
+    IMUDataFile.println(currentTime);
+    IMUDataFile.print(",");
+    IMUDataFile.print(accel.x());
+    IMUDataFile.print(",");
+    IMUDataFile.print(accel.y());
+    IMUDataFile.print(",");
+    IMUDataFile.print(accel.z());
+    IMUDataFile.print(",");
+    IMUDataFile.print(quat.w());
+    IMUDataFile.print(",");
+    IMUDataFile.print(quat.x());
+    IMUDataFile.print(",");
+    IMUDataFile.print(quat.y());
+    IMUDataFile.print(",");
+    IMUDataFile.print(quat.z());
+    IMUDataFile.close();
 
 		// Every TRANSMIT_DELAY, send out the current data.
 		if (currentTime - lastSendTime > TRANSMIT_DELAY)
