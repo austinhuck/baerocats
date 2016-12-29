@@ -11,5 +11,11 @@
     <frame name="TransmitTestExt1">
       <payload>7E001510010013A200415AE1C1FFFE010054657374696E6720</payload>
     </frame>
+    <frame name="TransmitTestPC1">
+      <payload>7E001510010013A200412692E8FFFE010054657374696E677C</payload>
+    </frame>
+    <frame name="GetRSSI">
+      <payload>7E00040801444270</payload>
+    </frame>
   </frames_list>
 </data>

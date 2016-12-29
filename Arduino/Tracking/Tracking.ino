@@ -1,5 +1,5 @@
 #include <Adafruit_GPS.h>
-#include <Adafruit_BNO055.h>
+#include <Adafruit_BNO055_Baerocats.h>
 #include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
 #include <stdint.h>
@@ -15,8 +15,8 @@ File IMUDataFile;
 
 // !!! TRANSMIT_DELAY must be greater than and 
 // a multiple of SAMPLE_DELAY
-String DataFileName="FullScaleTest1.txt";
-#define SAMPLE_DELAY 200
+String DataFileName="reamer.txt";
+#define SAMPLE_DELAY 100
 #define TRANSMIT_DELAY 1000
 
 unsigned long gpsTime = 0;
@@ -71,6 +71,7 @@ void setup()
 			delay(500);
 		}
 	}
+
   Serial.println("initialization done.");
 
 	if (digitalRead(ModeSelect))
@@ -165,6 +166,9 @@ void setup()
 	}
 
 	bno->setExtCrystalUse(true);
+	bno->setGRange(Adafruit_BNO055::G_RANGE_8G);
+
+	Serial.print("Set IMU G-Range: 8G");
 
 	// Begin GPS Communication
 	Serial2.begin(9600);
@@ -234,7 +238,8 @@ void loop()
     // open the file. note that only one file can be open at a time,
     // so you have to close this one before opening another.
     IMUDataFile = SD.open(DataFileName, FILE_WRITE);
-    IMUDataFile.println(currentTime);
+    if (IMUDataFile) {
+    IMUDataFile.print(currentTime);
     IMUDataFile.print(",");
     IMUDataFile.print(accel.x());
     IMUDataFile.print(",");
@@ -249,8 +254,13 @@ void loop()
     IMUDataFile.print(quat.y());
     IMUDataFile.print(",");
     IMUDataFile.print(quat.z());
+    IMUDataFile.println("");
     IMUDataFile.close();
 
+    } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening data file");
+    }
 		// Every TRANSMIT_DELAY, send out the current data.
 		if (currentTime - lastSendTime > TRANSMIT_DELAY)
 		{
