@@ -17,5 +17,8 @@
     <frame name="GetRSSI">
       <payload>7E00040801444270</payload>
     </frame>
+    <frame name="TransmitTestExt2">
+      <payload>7E001510010013A200412692E7FFFE010054657374696E677D</payload>
+    </frame>
   </frames_list>
 </data>

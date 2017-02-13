@@ -128,7 +128,7 @@ void setup()
 	}
 	
 	// XBee Serial (Serial1)
-	Serial1.begin(57600);
+	Serial1.begin(115200);
 	xbee = new XBeeComm(Serial1);
 
 	if (xbee->CheckRadio())

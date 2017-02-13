@@ -46,9 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataConverter.cs" />
+    <Compile Include="DataMessage.cs" />
     <Compile Include="GPSMessage.cs" />
     <Compile Include="IMUMessage.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="MessageFactory.cs" />
     <Compile Include="XBeeComm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,8 +8,8 @@
       <setting command="HP">3</setting>
       <setting command="ID">2484</setting>
       <setting command="MT">3</setting>
-      <setting command="PL">0</setting>
-      <setting command="RR">A</setting>
+      <setting command="PL">4</setting>
+      <setting command="RR">0</setting>
       <setting command="CE">2</setting>
       <setting command="BH">0</setting>
       <setting command="NH">7</setting>
@@ -22,8 +22,8 @@
       <setting command="NO">0</setting>
       <setting command="CI">11</setting>
       <setting command="EE">1</setting>
-      <setting command="KY"></setting>
-      <setting command="BD">6</setting>
+      <setting command="KY">73706163656372616674</setting>
+      <setting command="BD">7</setting>
       <setting command="NB">0</setting>
       <setting command="SB">0</setting>
       <setting command="RO">3</setting>
@@ -37,7 +37,7 @@
       <setting command="D4">0</setting>
       <setting command="D5">1</setting>
       <setting command="D6">0</setting>
-      <setting command="D7">1</setting>
+      <setting command="D7">0</setting>
       <setting command="D8">1</setting>
       <setting command="D9">1</setting>
       <setting command="P0">1</setting>
@@ -50,7 +50,7 @@
       <setting command="M0">0</setting>
       <setting command="M1">0</setting>
       <setting command="LT">0</setting>
-      <setting command="RP">28</setting>
+      <setting command="RP">2</setting>
       <setting command="AV">1</setting>
       <setting command="IC">0</setting>
       <setting command="IF">1</setting>
