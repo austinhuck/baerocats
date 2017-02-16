@@ -59,7 +59,17 @@ namespace ConsoleTest
 
                 _xbee.Open();
 
-                Console.WriteLine("XBee connected on {0}", portNames[value]);
+                string msg = null;
+                if (_xbee.CheckRadio())
+                {
+                    msg = "Correct";
+                }
+                else
+                {
+                    msg = "Incorrect";
+                }
+
+                Console.WriteLine("{0} XBee connected on {1}", msg, portNames[value]);
 
                 _signalTimer = new Timer(new TimerCallback((obj) =>
                 {
@@ -81,6 +91,8 @@ namespace ConsoleTest
                     _xbee.Close();
                 }
             }
+
+            Console.Read();
         }
 
         private static async void GetSignalStrength()
@@ -91,25 +103,29 @@ namespace ConsoleTest
 
         private static void XBeeMessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Console.Write(e.Message.Timestamp);
-            Console.Write(" - ");
-
             // Process message by type here.
-            if (e.Message is IMUMessage)
+            if (e.Message is DataMessage)
             {
-                IMUMessage msg = (IMUMessage)e.Message;
-                Console.WriteLine("IMU Message: ({0}) ({1})",
-                    msg.Acceleration.ToString(),
-                    msg.Orientation.ToString());
-            }
-            else if (e.Message is GPSMessage)
-            {
-                GPSMessage msg = (GPSMessage)e.Message;
-                Console.WriteLine("GPS Message: Valid[{0}] Lat[{1}] Long[{2}] Alt[{3}]",
-                    msg.Valid.ToString(),
-                    msg.LatitudeDegrees,
-                    msg.LongitudeDegress, 
-                    msg.Altitude);
+                DataMessage msg = (DataMessage)e.Message;
+                Console.WriteLine("Data Message : ({14}, {15}, {16}, {17}) : ({0}, {1}) : ({2}, {3}, {4}) : ({5}, {6}, {7}, {8}) : ({9}, {10}, {11}) : ({12}, {13})",
+                    msg.Latitude,
+                    msg.Longitude,
+                    msg.AccelX,
+                    msg.AccelY,
+                    msg.AccelZ,
+                    msg.QuatW,
+                    msg.QuatX,
+                    msg.QuatY,
+                    msg.QuatZ,
+                    msg.OmegaX,
+                    msg.OmegaY,
+                    msg.OmegaZ,
+                    msg.Altitude,
+                    msg.Light,
+                    msg.ID,
+                    msg.Source,
+                    msg.Timestamp,
+                    msg.Type);
             }
             else
             {

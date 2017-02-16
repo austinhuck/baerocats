@@ -14,6 +14,13 @@ namespace Baerocats.XBee
             CmdResponse = 4
         }
 
+        public enum MsgSource
+        {
+            Ground = 0,
+            Rocket = 1,
+            Tripod = 2
+        }
+
         private static ushort _ID = 0;
         private static object _IDLock = new object();
         
@@ -39,7 +46,7 @@ namespace Baerocats.XBee
         }
 
         public ushort ID;
-        public byte Source;
+        public MsgSource Source;
         public ulong Timestamp;
         public MsgType Type;
 
@@ -53,7 +60,7 @@ namespace Baerocats.XBee
             Type = MsgType.Unknown;
         }
 
-        public Message(ushort id, byte source, ulong timestamp, MsgType type)
+        public Message(ushort id, MsgSource source, ulong timestamp, MsgType type)
         {
             ID = id;
             Source = source;
@@ -61,25 +68,15 @@ namespace Baerocats.XBee
             Type = type;
         }
 
-        internal virtual int GetDataLength()
+        public virtual int GetDataLength()
         {
-            return 12; // ID (2 bytes) + Timestamp (4 Bytes)
+            // ID (2 bytes) + Source (1 Byte) + Timestamp (8 Bytes) + Type (1 Byte)
+            return 12;
         }
 
-        internal virtual void GetData(byte[] buffer)
+        public virtual void GetData(Stream stream)
         {
-            Array.Copy(BitConverter.GetBytes(_id), 0, buffer, 0, 2);
-            Array.Copy(BitConverter.GetBytes(_timestamp), 0, buffer, 2, 4);   
-        }
-
-        internal static short GetId(byte[] data)
-        {
-            return BitConverter.ToInt16(data, 0);
-        }
-
-        internal static uint GetTimestamp(byte[] data)
-        {
-            return BitConverter.ToUInt32(data, 2);
+            
         }
     }
 }

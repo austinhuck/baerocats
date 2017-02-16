@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace Baerocats.XBee
 {
@@ -23,10 +19,65 @@ namespace Baerocats.XBee
         public float Altitude;
         public float Light;
 
-        public Message(ushort id,
-            byte source,
+        public DataMessage(
+            ushort id,
+            MsgSource source,
             ulong timestamp,
             MsgType type,
-            )
+            float lat,
+            float lng,
+            float ax,
+            float ay,
+            float az,
+            float qw,
+            float qx,
+            float qy,
+            float qz,
+            float wx,
+            float wy,
+            float wz,
+            float alt,
+            float light) :
+            base(
+                id,
+                source,
+                timestamp,
+                type)
+        {
+            Latitude = lat;
+            Longitude = lng;
+            AccelX = ax;
+            AccelY = ay;
+            AccelZ = az;
+            QuatW = qw;
+            QuatX = qx;
+            QuatY = qy;
+            QuatZ = qz;
+            OmegaX = wx;
+            OmegaY = wy;
+            OmegaZ = wz;
+            Altitude = alt;
+            Light = light;
+        }
+
+        public override void GetData(Stream stream)
+        {
+            base.GetData(stream);
+
+            DataConverter.WriteSingle(stream, Latitude);
+            DataConverter.WriteSingle(stream, Longitude);
+            DataConverter.WriteSingle(stream, AccelX);
+            DataConverter.WriteSingle(stream, AccelY);
+            DataConverter.WriteSingle(stream, AccelZ);
+            DataConverter.WriteSingle(stream, QuatW);
+            DataConverter.WriteSingle(stream, QuatX);
+            DataConverter.WriteSingle(stream, QuatY);
+            DataConverter.WriteSingle(stream, QuatZ);
+            DataConverter.WriteSingle(stream, OmegaX);
+            DataConverter.WriteSingle(stream, OmegaY);
+            DataConverter.WriteSingle(stream, OmegaZ);
+            DataConverter.WriteSingle(stream, Altitude);
+            DataConverter.WriteSingle(stream, Light);
+        }
     }
 }

@@ -4,10 +4,10 @@ using NETMF.OpenSource.XBee;
 using NETMF.OpenSource.XBee.Api;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Media.Media3D;
 
 namespace Baerocats.XBee
 {
@@ -29,6 +29,7 @@ namespace Baerocats.XBee
 
         private const ulong EXT_1_SERIAL= 0x0013A200415AE1C1;
         private const ulong EXT_2_SERIAL = 0x0013A200412692E7;
+        private byte[] GROUND_SERIAL_LOW = new byte[] { 0x41, 0x26, 0x92, 0xE8 };
         private const ulong GROUND_SERIAL = 0x0013A200412692E8;
         private Random _rand = new Random(DateTime.Now.Millisecond);
         private bool _simSwap = true;
@@ -50,7 +51,7 @@ namespace Baerocats.XBee
             }
             else
             {
-                _xbee = new XBeeApi(port, 57600);
+                _xbee = new XBeeApi(port, 115200);
                 _xbee.DataReceived += XbeeDataReceived;
             }
         }
@@ -91,13 +92,11 @@ namespace Baerocats.XBee
         /// <param name="msg">The prepared message.</param>
         public void SendMessage(Message msg)
         {
-            int dataLength = msg.GetDataLength();
-            byte[] data = new byte[dataLength];
-            msg.GetData(data);
-
             if (_xbee != null)
             {
-                _xbee.Send(data);
+                MemoryStream stream = new MemoryStream();
+                msg.GetData(stream);
+                _xbee.Send(stream.ToArray());
             }
         }
 
@@ -135,13 +134,54 @@ namespace Baerocats.XBee
         }
 
         /// <summary>
-        /// Ignore
+        /// Checks communication to the radio.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if communication is good.</returns>
         public bool CheckRadio()
         {
-            // TODO
-            return true;
+            if (_xbee != null)
+            {
+                Task<bool> atTask = new Task<bool>(() =>
+                {
+                    AtCommand cmd = _xbee.CreateRequest((ushort)NETMF.OpenSource.XBee.Api.Zigbee.AtCmd.SerialNumberLow);
+                    AsyncSendResult result = _xbee.BeginSend(cmd, new AtResponseFilter(cmd), 2000);
+                    XBeeResponse[] responses = _xbee.EndReceive(result);
+
+                    bool valid = true;
+
+                    if (responses.Length == 0)
+                    {
+                        valid = false;
+                    }
+                    else
+                    {
+                        byte[] serialLow = ((AtResponse)responses[0]).Value;
+                        
+
+                        if (serialLow.GetLength(0) == 4)
+                        {
+                            for (int i = 0; i < 4; i++)
+                            {
+                                valid &= GROUND_SERIAL_LOW[i] == serialLow[i];
+                            }
+                        }
+                        else
+                        {
+                            valid = false;
+                        }
+                    }
+
+                    return valid;
+                });
+
+                atTask.Start();
+                atTask.Wait();
+                return atTask.Result;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -155,22 +195,7 @@ namespace Baerocats.XBee
 
             if (handler != null)
             {
-                short msgId = Message.GetId(data);
-                Message msg = null;
-
-                switch (msgId)
-                {
-                    case IMUMessage.IMU_MESSAGE_ID:
-                        msg = new IMUMessage(data);
-                        break;
-                    case GPSMessage.GPS_MESSAGE_ID:
-                        msg = new GPSMessage(data);
-                        break;
-                    default:
-                        msg = new Message(data);
-                        break;
-                }
-                
+                Message msg = MessageFactory.Parse(data);
                 handler(this, new MessageReceivedEventArgs(msg));
             }
         }
@@ -181,28 +206,23 @@ namespace Baerocats.XBee
 
             if (handler != null)
             {
-                Message msg = null;
-                if (_simSwap)
-                {
-                    msg = new IMUMessage(0,
-                        new Vector3D(
-                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
-                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
-                            _rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1)),
-                        new Quaternion(
-                            _rand.NextDouble(),
-                            _rand.NextDouble(),
-                            _rand.NextDouble(),
-                            _rand.NextDouble()));
-                }
-                else
-                {
-                    msg = new GPSMessage(0, true, 39.1309584, -84.5200646, 800.12);
-                }
+                Message msg = new DataMessage(
+                    0, Message.MsgSource.Rocket, 123456789, Message.MsgType.Data,
+                    39.1309584F, -84.5200646F,
+                    (float)_rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble() * 16 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble(),
+                    (float)_rand.NextDouble(),
+                    (float)_rand.NextDouble(),
+                    (float)_rand.NextDouble(),
+                    (float)_rand.NextDouble() * 6 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble() * 6 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble() * 6 * (_rand.Next(1) == 1 ? -1 : 1),
+                    (float)_rand.NextDouble() * 6000,
+                    (float)_rand.NextDouble() * 1000);
 
                 handler(this, new MessageReceivedEventArgs(msg));
-
-                _simSwap = !_simSwap;
             }
         }
     }
