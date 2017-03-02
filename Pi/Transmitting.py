@@ -38,6 +38,7 @@ class Radio(object):
         while not self._threadShutdown.isSet():
             try:
                 message = self._sendQueue.get(block=True, timeout=0.1)
+
                 self._xbee.send('tx',
                                 frame_id=b'\x00',
                                 dest_addr_long=Radio.GroundAddress,
@@ -104,7 +105,7 @@ class Message(object):
 
     def GetData(self):
         # TODO: Implement
-        return struct.pack('>HBQB', self.ID, self.Source, self.Time, self.Type)
+        return struct.pack('<HBQB', self.ID, self.Source, self.Time, self.Type)
     
 class DataMessage(Message):
     def __init__(self, lat, lng, ax, ay, az, qw, qx, qy, qz, wx, wy, wz, alt, light):
@@ -128,7 +129,7 @@ class DataMessage(Message):
     def GetData(self):
         # TODO: Implement
         return Message.GetData(self) + \
-            struct.pack('>14f',
+            struct.pack('<14f',
                         self.Latitude,
                         self.Longitude,
                         self.AccelX,
@@ -154,6 +155,6 @@ class LogMessage(Message):
     def GetData(self):
         # TODO: Implement
         return Message.GetData(self) + \
-            struct.pack('>Bs',
+            struct.pack('<Bs',
                         self.Length,
                         self.Text)

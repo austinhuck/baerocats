@@ -13,8 +13,8 @@ class logger:
     phase = ""
 
     def __init__(self):
-        pwd = os.getcwd()
-        self.launchPath, self.imgPath, self.processedPath = self.launchDirectory(pwd)
+        self.launchPath, self.imgPath, self.processedPath = \
+                         self.launchDirectory('/home/pi/Data')
         self.t0 = time.time()
         
         #Log File Set Up
@@ -43,10 +43,11 @@ class logger:
 
     #Get present working directory, and make files paths for data storage
     def launchDirectory(self, pwd):
-        launchDir = time.strftime('LAUNCH_%Y-%m-%d_%H_%M_%S')
+        #launchDir = time.strftime('LAUNCH_%Y-%m-%d_%H-%M-%S')
+        launchDir = time.strftime('LAUNCH_%Y-%b%d_%H-%M-%S%p')
         launchPath = os.path.join(pwd, launchDir)
-        imgPath = os.path.join(launchDir, 'raw')
-        processedPath = os.path.join(launchDir, 'processed')
+        imgPath = os.path.join(launchPath, 'raw')
+        processedPath = os.path.join(launchPath, 'processed')
 
         #make appropriate directories
         if not os.path.exists(launchPath):
@@ -70,6 +71,7 @@ class logger:
         ImageData = open(self.ImageDataFile, 'a+')
         ImageData.write(stringToLog + '\n')
         ImageData.close()
+        Log.Log('Image Data Recorded')
    
     #Record image processing results to a file
     def ImageLog(self, stringToLog):
@@ -77,12 +79,14 @@ class logger:
         ImageLog.write(stringToLog + '\n')
         ImageLog.close()
         print stringToLog
+        Log.Log('Image Taken')
 
     #Record geolocation calculation results to a file
     def GeolocationData(self, stringToLog):
         GeolocationData = open(self.GeolocationFile, 'a+')
         GeolocationData.write(stringToLog + '\n')
-        GeolocationData.close()	
+        GeolocationData.close()
+        Log.Log('Geolocation calculated')
     
     #Set phase of flight in logger
     def setPhase(self,phase):

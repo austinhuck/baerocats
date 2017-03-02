@@ -217,11 +217,11 @@ class Imaging:
         Log.Log('    Weighted Longitude:,'+str(weightedLongitude)+'\n')
         
     #Function to run during descent loop
-    def DescentImaging(self,TDC):
+    def DescentImaging(self,TDC,alt0):
         self.tImage = time.time()-Log.t0 #get time
         alt = TDC.GetAltitude()-alt0 #altitude - Z
         orientW,orientX,orientY,orientZ = TDC.GetOrientation() #get orientation vector
-        latGPS,lonGPS = TDC.GetGPSPosition() #GPS - X,Y
+        fix, latGPS,lonGPS = TDC.GetGpsPosition() #GPS - X,Y
         
         #Used for Testing - REPLACE
         '''
