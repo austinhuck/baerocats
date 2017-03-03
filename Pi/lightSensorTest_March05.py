@@ -1,26 +1,4 @@
-# -*- coding: utf-8 -*-
 
-##This code serves to develop the python packages for the first full scale test 
-##on November 19, 2016.
-##
-##Revision Log: 
-##    Date: 11/6/2016 - Brandon
-##    Changes: Started programming and planning
-##    
-##    Date: 11/16/2016 - Brandon
-##    Changes: Added in code for light sensor, continued editing flight program
-##
-##    Date: 11/18/2016 - Brandon
-##    Changes: Added in code for Power on Test and Payload
-##    
-##    Date: 1/13/2017 - Brandon
-##    Changes: Integration with Justas for January Launch
-##    
-##    Date: 1/18/2017 - Brandon
-##    Changes: Integration with team for January 21
-##
-##    Date: 1/212017 - AJohnson
-##    Changes: Added landing detection code
 
 ##############################################################################
 # Import the Python Packages - Subject to Change
@@ -64,9 +42,7 @@ def debugLED(ledPin, systemGood):
             GPIO.output(ledPin,GPIO.LOW)
             time.sleep(t1)
 
-def LightTest(setting,pin,num,integrationTime):
-    Log.Log('IntegrationTime(sec):' + str(integrationTime))
-    tdc._tsl.set_integration_time(integrationTime) #DOUBLE CHECK THIS 
+def LightTest(setting,pin,num):
     count = 0
     if setting == 'switch':
         while getSwitch(pin) == True:
@@ -79,6 +55,7 @@ def LightTest(setting,pin,num,integrationTime):
     Log.Log('**************************************')
     Log.Log(' ')
     Log.Log(' ')
+    
 
 ##############################################################################
 #####       This is the program that runs once the script starts         #####
@@ -145,16 +122,8 @@ setting = 'fixed' #switch
 num = 20
 
 integrationTime = 0.402
-LightTest(setting, pin, num, integrationTime)
+LightTest(setting, pin, 500)
     
-integrationTime = 0.2
-LightTest(setting, pin, num*2, integrationTime)
-    
-integrationTime = 0.1
-LightTest(setting, pin, num*4, integrationTime)
-
-integrationTime = 0.05
-LightTest(setting, pin, num*8, integrationTime)
 
 ######################################
 # -------> End of Program
