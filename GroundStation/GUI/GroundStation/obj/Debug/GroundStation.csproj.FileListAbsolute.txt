@@ -1,0 +1,214 @@
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\MainWindow.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\App.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\App.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\Controls\Comms.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\GroundStation.exe.config
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\MainWindow.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.g.resources
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\obj\Debug\GroundStation.csprojResolveAssemblyReference.cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\XBeeComm.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\XBee.PC.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\XBeeComm.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStation\GroundStation\bin\Debug\XBee.PC.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe.config
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.dll
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.xml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csprojResolveAssemblyReference.cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\MainWindow.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\App.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\App.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\MainWindow.baml
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.g.resources
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Onedrive\College\SeniorDesign\GroundStation\Code\dev\GroundStationGUI\GroundStation\obj\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe.config
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\MainWindow.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\App.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\App.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\MainWindow.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation.g.resources
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\NovemberLaunch\Code\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe.config
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.dll
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.pdb
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.xml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csprojResolveAssemblyReference.cache
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\MainWindow.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\App.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\App.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\MainWindow.baml
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.g.resources
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.exe
+C:\Users\Justas\Box Sync\Spacecraft 2017 Team Folder\Group Folders\Embedded Systems\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe.config
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.exe
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\GroundStation.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\OxyPlot.Wpf.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBeeComm.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\bin\Debug\XBee.PC.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\MainWindow.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\App.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\App.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\Comms.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\PlotControl.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\RocketPage.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\Controls\TRIPODPage.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\MainWindow.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.g.resources
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.exe
+C:\GitShit\Baerocats\EES_Code\GroundStation\GroundStationGUI\GroundStation\obj\Debug\GroundStation.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\GroundStation.exe.config
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\GroundStation.exe
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\GroundStation.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\MahApps.Metro.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.Wpf.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\System.Windows.Interactivity.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\XBeeComm.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\XBee.PC.dll
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\MahApps.Metro.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\MahApps.Metro.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.Wpf.pdb
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\OxyPlot.Wpf.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\XBeeComm.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\bin\Debug\XBee.PC.xml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.csprojResolveAssemblyReference.cache
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\Comms.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\DataCollection.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\PlotControl.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\RocketPage.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\TRIPODPage.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\MainWindow.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\App.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.cache
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation_MarkupCompile.lref
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\App.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\Comms.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\DataCollection.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\PlotControl.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\RocketPage.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\Controls\TRIPODPage.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\MainWindow.baml
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.g.resources
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.Properties.Resources.resources
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.csproj.GenerateResource.Cache
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.exe
+C:\GitShit\Baerocats\EES_Code\GroundStation\GUI\GroundStation\obj\Debug\GroundStation.pdb

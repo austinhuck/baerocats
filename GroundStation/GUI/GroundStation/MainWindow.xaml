@@ -1,0 +1,53 @@
+﻿<Controls:MetroWindow x:Class="GroundStation.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+            xmlns:UC="clr-namespace:GroundStation.Controls"
+            xmlns:oxy="http://oxyplot.org/wpf"
+            Title="Ground Station" Height="660" Width="600">
+    <Grid Name="Main" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  Grid.Row="0" Grid.Column="0">
+            <Grid Name="DataPanel" Grid.Row="0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <UC:Comms x:Name="Comms" Grid.Row="0" Grid.Column="0"></UC:Comms>
+                <Expander Name="Data" Header="Data" IsExpanded="True" Grid.Row="1" Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <UC:DataCollection x:Name="Rocket" HeadValue="Rocket"  Grid.Row="0"></UC:DataCollection>
+                        <UC:DataCollection x:Name="TRIPOD" HeadValue="Payload" Grid.Row="1"></UC:DataCollection>
+                        <Button Name="TestTRIPOD" Content="Test Tripod" Grid.Row="2" Click="TestVector_Click"/>
+                    </Grid>
+                </Expander>
+            </Grid>
+        </ScrollViewer>
+        <TabControl Grid.Row="0" Grid.Column="1">
+            <TabItem Header="Rocket">
+                <UC:RocketPage x:Name="RocketData"></UC:RocketPage>
+            </TabItem>
+            <TabItem Header="TRIPOD">
+                <UC:TRIPODPage x:Name="TRIPODData"/>
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</Controls:MetroWindow>

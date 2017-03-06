@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XBeeComm</name>
+    </assembly>
+    <members>
+        <member name="M:Baerocats.XBee.MessageFactory.Parse(System.Byte[])">
+            <summary>
+            Parses message data into a message object.
+            </summary>
+            <param name="data">Raw message data</param>
+            <returns><see cref="T:Baerocats.XBee.Message"/></returns>
+        </member>
+        <member name="T:Baerocats.XBee.XBeeComm">
+            <summary>
+            Class which handles all XBee communcation.
+            </summary>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.GetPortNames">
+            <summary>
+            Gets a list of available serial ports.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.#ctor(System.String)">
+            <summary>
+            Create a new XBeeComm object.
+            </summary>
+            <remarks>Serial port baud set for 57600.</remarks>
+            <param name="port">The name of the serial port to connect on.</param>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.Open">
+            <summary>
+            Open the serial port to the XBee.
+            </summary>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.Close">
+            <summary>
+            Close the serial port to the XBee.
+            </summary>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.SendMessage(Baerocats.XBee.Message)">
+            <summary>
+            Sends a message.
+            </summary>
+            <param name="msg">The prepared message.</param>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.GetSignalStrength">
+            <summary>
+            Returns the signal strength of the last received message in units of -dB.
+            </summary>
+        </member>
+        <member name="M:Baerocats.XBee.XBeeComm.CheckRadio">
+            <summary>
+            Checks communication to the radio.
+            </summary>
+            <returns>True if communication is good.</returns>
+        </member>
+        <member name="E:Baerocats.XBee.XBeeComm.MessageReceived">
+            <summary>
+            Event called upon receiving a message.
+            </summary>
+        </member>
+        <member name="T:Baerocats.XBee.MessageReceivedEventArgs">
+            <summary>
+            Event arguments class for Message Received event.
+            </summary>
+        </member>
+        <member name="M:Baerocats.XBee.MessageReceivedEventArgs.#ctor(Baerocats.XBee.Message)">
+            <summary>
+            Creates a new Message Received event arguments object.
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="P:Baerocats.XBee.MessageReceivedEventArgs.Message">
+            <summary>
+            The received message.
+            </summary>
+        </member>
+    </members>
+</doc>
