@@ -8,8 +8,8 @@
 #include <SD.h>
 
 
-#include "IMUMessage.h"
-#include "GPSMessage.h"
+#include "Message.h"
+#include "DataMessage.h"
 #include "XBeeComm.h"
 File IMUDataFile;
 
@@ -270,12 +270,19 @@ void loop()
 
 			lastSendTime = currentTime;
 
-			IMUMessage imuMessage(currentTime, accel, quat);
-			xbee->SendMessage(&imuMessage);
-
-			GPSMessage gpsMessage(currentTime, gps->fix, gps->latitudeDegrees, gps->longitudeDegrees, gps->altitude);
-			xbee->SendMessage(&gpsMessage);
-
+			DataMessage dataMessage(
+			  (double)gps->latitudeDegrees,
+			  (double)gps->longitudeDegrees,
+			  (double)accel.x(),
+			  (double)accel.y(),
+			  (double)accel.z(),
+			  (double)quat.w(),
+			  (double)quat.x(),
+			  (double)quat.y(),
+			  (double)quat.z(),
+			  0.0,0.0,0.0,0.0,0.0);
+			xbee->SendMessage(&dataMessage);
+      
 			//Serial.print("Time to Send: ");
 			//Serial.println(millis() - sendStart);
 		}
