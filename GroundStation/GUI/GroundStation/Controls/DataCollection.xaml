@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="GroundStation.Controls.DataCollection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GroundStation.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="DataC">
+        <Expander Name="RocketSegment" Header="{Binding Path=HeadValue}" IsExpanded="True" Grid.Row="0" Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Expander Name="IMU" Header="IMU" IsExpanded="True" Grid.Row="0" Grid.Column="0" Width="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Orientation:"         Grid.Row="0" Grid.Column="0"/>
+                        <Label Content="X:"                   Grid.Row="1" Grid.Column="0"/>
+                        <Label Name="XData" Content="100000"  Grid.Row="1" Grid.Column="1"/>
+                        <Label Content="Y:"                   Grid.Row="2" Grid.Column="0"/>
+                        <Label Name="YData" Content="100000"  Grid.Row="2" Grid.Column="1"/>
+                        <Label Content="Z:"                   Grid.Row="3" Grid.Column="0"/>
+                        <Label Name="ZData" Content="100000"  Grid.Row="3" Grid.Column="1"/>
+                        <Label Content="W:"                   Grid.Row="4" Grid.Column="0"/>
+                        <Label Name="WData" Content="100000"  Grid.Row="4" Grid.Column="1"/>
+                        <Label Content="Accel:"               Grid.Row="5" Grid.Column="0"/>
+                        <Label Content="ax:"                  Grid.Row="6" Grid.Column="0"/>
+                        <Label Name="AXData" Content="100000" Grid.Row="6" Grid.Column="1"/>
+                        <Label Content="ay:"                  Grid.Row="7" Grid.Column="0"/>
+                        <Label Name="AYData" Content="100000" Grid.Row="7" Grid.Column="1"/>
+                        <Label Content="az:"                  Grid.Row="8" Grid.Column="0"/>
+                        <Label Name="AZData" Content="100000" Grid.Row="8" Grid.Column="1"/>
+                    </Grid>
+                </Expander>
+                <Expander Name="GPS" Header="GPS" IsExpanded="True" Grid.Row="2" Grid.Column="0" Width="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Valid:"                Grid.Row="0" Grid.Column="0"/>
+                        <Label Name="GPSValid" Content="True?" Grid.Row="0" Grid.Column="1"/>
+                        <Label Content="Lattitude:"            Grid.Row="1" Grid.Column="0"/>
+                        <Label Name="Lat" Content="100000"     Grid.Row="1" Grid.Column="1"/>
+                        <Label Content="Longitude:"            Grid.Row="2" Grid.Column="0"/>
+                        <Label Name="Lon" Content="100000"     Grid.Row="2" Grid.Column="1"/>
+                        <Label Content="Altitude:"             Grid.Row="3" Grid.Column="0"/>
+                        <Label Name="Alt" Content="100000"     Grid.Row="3" Grid.Column="1"/>
+                    </Grid>
+                </Expander>
+            </Grid>
+        </Expander>
+    </Grid>
+</UserControl>

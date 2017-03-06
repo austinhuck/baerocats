@@ -193,7 +193,8 @@ class TDC:
         try:
             return self._tsl.lux()
         except:
-            return 1000000
+            Log.Log('Oversaturated Light Sensor')
+            return 30000
             
     def _ReadPressure(self):
          #pressure in psf
