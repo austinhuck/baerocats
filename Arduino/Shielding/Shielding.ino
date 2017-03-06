@@ -45,7 +45,7 @@ void setup()
 
   Serial.println("Initializing XBee Radio...");
 	// XBee Serial (Serial1)
-	Serial1.begin(57600);
+	Serial1.begin(115200);
   xbee = XBee();
   xbee.setSerial(Serial1);
 
@@ -61,7 +61,8 @@ void loop()
   }
 
   digitalWrite(Status, HIGH);
-  
+
+  Serial.println("Requesting DB");
 	// Every SAMPLE_DELAY save a sample
   xbee.send(atRequest);
 
@@ -76,19 +77,17 @@ void loop()
   xbee.getResponse().getAtCommandResponse(atResponse);
   
   if (atResponse.getStatus() == 0)
-  {
+  {   
     uint8_t* value = atResponse.getValue();
-
-    
-    
-    Serial.println(sprintf("%d",value[0]));
+    int db = value[0];
     
     // open the file. note that only one file can be open at a time,
     // so you have to close this one before opening another.
     DBDataFile = SD.open(DataFileName, FILE_WRITE);
     if (DBDataFile)
     {
-      DBDataFile.println(sprintf("%d",value[0]));
+      Serial.println(db);
+      DBDataFile.println(db);
       DBDataFile.close();
     }
     else
