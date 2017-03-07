@@ -8,7 +8,7 @@ import os
 import time
 import threading
 import struct
-#import GPS
+import gps
 import serial
 import Transmitting
 
@@ -153,7 +153,24 @@ class TDC:
 
     def _GpsWorker(self):
         while not self._gpsStopEvent.isSet():
-            self._gpsStopEvent.wait(0.1)
+            sample = self._gps.next()
+            if sample['class'] == 'TPV':
+                with self._gpsLock:
+                    # TODO: Sync pi system time
+                    if hasattr(sample, 'time'):
+                        pass
+
+                    # Determine the fix, this may not always be present.
+                    if hasattr(sample, 'fix'):
+                        self._fix = sample.fix
+                    else:
+                        self._fix = false
+
+                    # Get latitude and longitude attributes.
+                    if hasattr(sample, 'lat'):
+                        self._latitude = sample.lat
+                    if hasattr(sample, 'lon'):
+                        self._longitude = sample.lon
 
     def _IsRecording(self):
         return not self._tdcStopEvent.isSet() and self._tdcThread.isAlive()
@@ -257,7 +274,8 @@ class TDC:
         self._radioThread.daemon = False
 
         # TODO: Add error handling for sensor init...        
-        #self._gps = GPS.GPS(hw_interface='/dev/ttyAMA0')
+        self._gps = gps.gps("localhost", "2947")
+        self._gps.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
         self._gpsStopEvent = threading.Event()
         self._gpsThread = threading.Thread(target=self._GpsWorker, name='GPS')
         self._gpsThread.daemon = False
