@@ -164,7 +164,7 @@ class TDC:
                     if hasattr(sample, 'fix'):
                         self._fix = sample.fix
                     else:
-                        self._fix = false
+                        self._fix = False
 
                     # Get latitude and longitude attributes.
                     if hasattr(sample, 'lat'):
@@ -268,7 +268,7 @@ class TDC:
                 self._dataFile.close()
                 self._dataFile = None
 
-        #self._radio = Transmitting.Radio()
+        self._radio = Transmitting.Radio()
         self._radioStopEvent = threading.Event()
         self._radioThread = threading.Thread(target=self._RadioWorker, name='Radio')
         self._radioThread.daemon = False
@@ -369,13 +369,13 @@ class TDC:
         self._tdcStopEvent.clear()
         self._radioStopEvent.clear()
         self._tdcThread.start()
-        #self._radioThread.start()
+        self._radioThread.start()
         return self._tdcThread.isAlive() and self._radioThread.isAlive()
 
     def Stop(self, timeout=5):
         # Flag worker thread to stop and wait for stop
         self._radioStopEvent.set()
         self._tdcStopEvent.set()
-        #self._radioThread.join(timeout)
+        self._radioThread.join(timeout)
         self._tdcThread.join(timeout)
         return not self._tdcThread.isAlive() and not self._radioThread.isAlive()
