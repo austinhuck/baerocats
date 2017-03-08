@@ -28,7 +28,7 @@ void loop()
     if (val == LOW) {
     // Right Position
     //servoObject.write (40);
-    servoObject.writeMicroseconds (600);
+    servoObject.writeMicroseconds (1800);
     Serial.println("Low");
     delay(100);
     } 
@@ -36,7 +36,7 @@ void loop()
     // Left Position
     //servoObject.write (80);
     Serial.println("High");
-    servoObject.writeMicroseconds (1000);
+    servoObject.writeMicroseconds (2200);
    delay(100);
   }
   }
