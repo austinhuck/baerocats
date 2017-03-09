@@ -60,7 +60,7 @@ def debugLED(ledPin, systemGood):
 def flashLedAbort(ledPin):
     Log.Log('Fatal Error: Disable startup switch to exit.')
     last = True
-    while getSwitch(startupSwitchGpio) == False:
+    while getSwitch(startupSwitchGpio) == True:
         if last:
             GPIO.output(ledPin, GPIO.HIGH)
         else:

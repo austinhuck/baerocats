@@ -39,14 +39,14 @@ class Radio(object):
             try:
                 message = self._sendQueue.get(block=True, timeout=0.1)
 
-				try:
-					self._xbee.send('tx',
-									frame_id=b'\x00',
-									dest_addr_long=Radio.GroundAddress,
-									dest_addr=b'\xFF\xFE',
-									data = message.GetData())
-				except Exception as e:
-					Log.Log(str(e))
+                try:
+                    self._xbee.send('tx',
+                        frame_id=b'\x00',
+                        dest_addr_long=Radio.GroundAddress,
+                        dest_addr=b'\xFF\xFE',
+                        data = message.GetData())
+                except Exception as e:
+                    Log.Log(str(e))
             except Queue.Empty:
                 pass
              
