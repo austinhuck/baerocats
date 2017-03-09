@@ -54,13 +54,22 @@ def getSwitch(switchPin):
 
 #This functions is used for lighting LEDs during debug check
 def debugLED(ledPin, systemGood):
-
-    GPIO.setup(ledPin, GPIO.OUT)
-
     if systemGood == 1:
         GPIO.output(ledPin,GPIO.HIGH)
     else:
         GPIO.output(ledPin,GPIO.LOW)
+
+def flashLedAbort(ledPin):
+    Log.Log('Fatal Error: Disable startup switch to exit.')
+    last = True
+    while getSwitch(startupSwitchGpio) == False:
+        if last:
+            GPIO.output(ledPin, GPIO.HIGH)
+        else:
+            GPIO.output(ledPin, GPIO.LOW)
+        last = not last
+        time.sleep(0.05)
+    sys.exit()
             
 def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
     #Averages descent rate and IMU angular velocities over a block of BlockSize samples 
@@ -165,10 +174,14 @@ Log.Log('Ground Phase 1: Start Up') #report to flight log
 
 #Initialize the TDC and Radio
 tdc = TDC.TDC()
-tdc.Initialize()
+radio = Transmitting.Radio()
 
-#radio = Transmitting.Radio()
-#radio.Initialize()
+try:
+    tdc.Initialize()
+    radio.Initialize()
+except Exception as e:
+    Log.Log(str(e))
+    flashLedAbort(ledGPIO)
 
 ######################################  
 #-------> Ground Phase 2: System Sensor Check
