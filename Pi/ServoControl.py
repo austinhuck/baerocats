@@ -25,7 +25,7 @@ class ServoControl:
         self.Switch = Switch
         self.Servo = Servo
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(Switch,GPIO.IN)
+        GPIO.setup(Switch,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(Servo,GPIO.OUT)
         time.sleep(1)
 
