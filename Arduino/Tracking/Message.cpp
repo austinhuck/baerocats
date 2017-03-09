@@ -40,11 +40,3 @@ uint16_t Message::getNextID()
   return id;
 }
 
-void Message::memcpyrvs(void * buffer, const void * value, size_t n)
-{
-  for (int i = n, j = 0; i > 0; j++, i--)
-  {
-    memcpy(buffer + j, value + i, 1);
-  }
-}
-
