@@ -123,6 +123,7 @@ void setup()
 			{
 				Serial.write(IMUDataFile.read());
 			}
+      IMUDataFile.println("Timestamp, Accel X, Accel Y, Accel Z, Quat W, Quat X, Quat Y, Quat Z, Latitude, Longitude");
       IMUDataFile.close();
 		}
 	}
@@ -184,15 +185,15 @@ void setup()
 	// Activate buzzer to indicate successful setup
 	for (int i = 0; i < 25; i++)
 	{
-		for (int i = 3500; i < 4500; i += 10)
+		for (int j = 3500; j < 4500; j += 10)
 		{
-			tone(Buzzer, i);
+			tone(Buzzer, j);
 			delay(1);
 		}
 
-		for (int i = 4500; i > 3500; i -= 10)
+		for (int j = 4500; j > 3500; j -= 10)
 		{
-			tone(Buzzer, i);
+			tone(Buzzer, j);
 			delay(1);
 		}
 	}
