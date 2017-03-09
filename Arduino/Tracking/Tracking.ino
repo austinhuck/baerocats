@@ -115,7 +115,7 @@ void setup()
 			float quatY;
 			float quatZ;
 
-			Serial.println("Timestamp, Accel X, Accel Y, Accel Z, Quat W, Quat X, Quat Y, Quat Z");
+			Serial.println("Timestamp, Accel X, Accel Y, Accel Z, Quat W, Quat X, Quat Y, Quat Z, Latitude, Longitude");
       IMUDataFile = SD.open(DataFileName);
 			Address = 0;
 
@@ -254,6 +254,10 @@ void loop()
     IMUDataFile.print(quat.y());
     IMUDataFile.print(",");
     IMUDataFile.print(quat.z());
+    IMUDataFile.print(",");
+    IMUDataFile.print(gps->latitudeDegrees);
+    IMUDataFile.print(",");
+    IMUDataFile.print(gps->longitudeDegrees);
     IMUDataFile.println("");
     IMUDataFile.close();
 
