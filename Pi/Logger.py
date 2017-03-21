@@ -13,8 +13,7 @@ class logger:
     phase = ""
 
     def __init__(self):
-        pwd = os.getcwd()
-        self.launchPath, self.imgPath, self.processedPath = self.launchDirectory(pwd)
+        self.launchPath, self.imgPath, self.processedPath = self.launchDirectory('/home/pi/Data')
         self.t0 = time.time()
         
         #Log File Set Up
@@ -47,14 +46,17 @@ class logger:
         #launchDir = time.strftime('LAUNCH_%Y-%m-%d_%H-%M-%S')
         launchDir = time.strftime('LAUNCH_%Y-%b%d_%H-%M-%S%p')
         launchPath = os.path.join(pwd, launchDir)
-        imgPath = os.path.join(launchDir, 'raw')
-        processedPath = os.path.join(launchDir, 'processed')
+        imgPath = os.path.join(launchPath, 'raw')
+        processedPath = os.path.join(launchPath, 'processed')
 
         #make appropriate directories
         if not os.path.exists(launchPath):
             os.makedirs(launchPath) #directory to store all launch information
+        if not os.path.exists(imgPath):
             os.makedirs(imgPath) #directory to store raw images
+        if not os.path.exists(processedPath):
             os.makedirs(processedPath) #directory to store processed images
+
 
         return launchPath, imgPath, processedPath
     

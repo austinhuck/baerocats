@@ -125,7 +125,7 @@ def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
 #-------> USER INPUTS
 #####################################
 
-mode = 'test'
+mode = 'launch'
 
 #Define GPIO Pins
 startupSwitchGpio = 17 #Activation Switch GPIO pin 1
@@ -165,6 +165,7 @@ while getSwitch(startupSwitchGpio) == False:
 #Make launch directory and flight log file    
 from Logger import Log
 t0 = Log.t0 #Get initial time for timing everything
+Log.Log(str(Log.imgPath)+str(Log.processedPath))
 from baerocatCV import Imaging
 
 #Create a Flight Log file for logging information about flight phases
@@ -269,6 +270,7 @@ baerocatCV = Imaging(Log)
 
 
 if mode == 'test':
+    Log.Log('Test mode initiated.')
     baerocatCV.Initialize(10)
     if baerocatCV.Cancel == False:
         with baerocatCV.camera:
@@ -280,20 +282,47 @@ if mode == 'test':
             baerocatCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
             baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
     else:
         Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
 elif mode == 'launch':
+    Log.Log('Launch mode initiated.')
     baerocatCV.Initialize(30)
     if baerocatCV.Cancel == False:
         with baerocatCV.camera:
             #Get one data point to check altitude
             alt = tdc.GetAltitude()-alt0 #altitude - Z
-            
+
+            #TEMPORARY ALTITUDE IGNORE
+            #numPhotos = 0
             #Descent Imaging Phase
-            while alt > 200:
+            while alt > 200: #numPhotos < 75:   #
                 alt = tdc.GetAltitude()-alt0 #altitude - Z
-                
-                baerocatCV.DescentImaging(alt)
+                #numPhotos = numPhotos + 1
+                #baerocatCV.DescentImaging(alt)
                 #Check to see if cancelled due to connection loss
                 if baerocatCV.Cancel == False:
                     baerocatCV.DescentImaging(alt)
@@ -343,7 +372,7 @@ Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to fligh
 #COMMAND
 
 #Process images
-baerocatCV.ProcessAll(baerocatCV.imgPath)
+#baerocatCV.ProcessAll(baerocatCV.imgPath)
 
 #Do something with LED after processing - signals end of launch
 #This means the TRIPOD can be shutdown

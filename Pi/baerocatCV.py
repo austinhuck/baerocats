@@ -262,7 +262,7 @@ class Imaging:
             #Loop through contours
             for i,color in enumerate(['red','blue','yellow']):
                 
-                #Check too see if there are contours
+                #Check to see if there are contours
                 if len(contourList[i]) > 0:
                     for c in contourList[i][0]:
                         M = cv2.moments(c)
@@ -273,9 +273,9 @@ class Imaging:
                             cY = int(M["m01"] / M["m00"]) #centroid y coordinate
                             
                             # draw the contour and center of the shape on the images
-                            cv2.drawContours(processsed, [c], -1, (0, 255, 0), 3)
-                            cv2.circle(processsed, (cX, cY), 7, (255, 255, 255), -1)
-                            cv2.putText(processsed, color, (cX - 20, cY - 20),
+                            cv2.drawContours(processed, [c], -1, (0, 255, 0), 3)
+                            cv2.circle(processed, (cX, cY), 7, (255, 255, 255), -1)
+                            cv2.putText(processed, color, (cX - 20, cY - 20),
                                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
                 else: 
                     #This executes if no contours are found for a given color
