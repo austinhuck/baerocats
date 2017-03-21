@@ -28,9 +28,7 @@
 ##############################################################################
 # Import the Python Packages - Subject to Change
 ##############################################################################
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-#import cv2
+import cv2
 import time, os, sys
 import numpy as np
 import RPi.GPIO as GPIO
@@ -54,13 +52,22 @@ def getSwitch(switchPin):
 
 #This functions is used for lighting LEDs during debug check
 def debugLED(ledPin, systemGood):
-
-    GPIO.setup(ledPin, GPIO.OUT)
-
     if systemGood == 1:
         GPIO.output(ledPin,GPIO.HIGH)
     else:
         GPIO.output(ledPin,GPIO.LOW)
+
+def flashLedAbort(ledPin):
+    Log.Log('Fatal Error: Disable startup switch to exit.')
+    last = True
+    while getSwitch(startupSwitchGpio) == True:
+        if last:
+            GPIO.output(ledPin, GPIO.HIGH)
+        else:
+            GPIO.output(ledPin, GPIO.LOW)
+        last = not last
+        time.sleep(0.05)
+    sys.exit()
             
 def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
     #Averages descent rate and IMU angular velocities over a block of BlockSize samples 
@@ -165,10 +172,14 @@ Log.Log('Ground Phase 1: Start Up') #report to flight log
 
 #Initialize the TDC and Radio
 tdc = TDC.TDC()
-tdc.Initialize()
+radio = Transmitting.Radio()
 
-#radio = Transmitting.Radio()
-#radio.Initialize()
+try:
+    tdc.Initialize()
+    radio.Initialize()
+except Exception as e:
+    Log.Log(str(e))
+    flashLedAbort(ledGPIO)
 
 ######################################  
 #-------> Ground Phase 2: System Sensor Check
@@ -255,24 +266,55 @@ Log.Log('Flight Phase 3: Descent') #report to flight log
 
 #Initialize camera to get capture settings
 baerocatCV = Imaging(Log)
-baerocatCV.Initialize()
+
 
 if mode == 'test':
-    with baerocatCV.camera:
-        baerocatCV.DescentImaging(tdc,alt0)
-        baerocatCV.DescentImaging(tdc,alt0)
-        baerocatCV.DescentImaging(tdc,alt0)
-        baerocatCV.DescentImaging(tdc,alt0)
-        baerocatCV.DescentImaging(tdc,alt0)
+    baerocatCV.Initialize(10)
+    if baerocatCV.Cancel == False:
+        with baerocatCV.camera:
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)        
+            alt = tdc.GetAltitude()-alt0
+            baerocatCV.DescentImaging(alt)
+    else:
+        Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
 elif mode == 'launch':
-    with baerocatCV.camera:
-        while tdc.GetAltitude()-alt0>200:
-            baerocatCV.DescentImaging(tdc,alt0)
+    baerocatCV.Initialize(30)
+    if baerocatCV.Cancel == False:
+        with baerocatCV.camera:
+            #Get one data point to check altitude
+            alt = tdc.GetAltitude()-alt0 #altitude - Z
+            
+            #Descent Imaging Phase
+            while alt > 200:
+                alt = tdc.GetAltitude()-alt0 #altitude - Z
+                
+                baerocatCV.DescentImaging(alt)
+                #Check to see if cancelled due to connection loss
+                if baerocatCV.Cancel == False:
+                    baerocatCV.DescentImaging(alt)
+                else:
+                    Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
+                    break
+            
+            #Log that imaging is complete
+            Log.Log('Image Capture Phase Complete:\n\t \
+                Altitude of %d has been reached \n\t \
+                %d successful images captured' %(200,baerocatCV.imageSuccess))        
+    else:
+        Log.Log('Imaging cancelled due to failure to initiate')
 
+#Shutdown the camera
+baerocatCV.CameraShutdown()
   
 ######################################  
 # -------> Flight Phase 4: Landering
 ###################################### 
+
 Log.Log('Flight Phase 4: Landering') #report to flight log
 
 #Landing Detection
@@ -295,6 +337,18 @@ servo.LandServo()
 # -------> Flight Phase 6: Fallen Upstanded Lander Bystandering
 ######################################
 Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to flight log
+
+#Do something with the LED before processing
+#THIS MEANS TRIPOD IS STILL FUNCTIONING AND SHOULD NOT BE SHUT OFF 
+#COMMAND
+
+#Process images
+baerocatCV.ProcessAll(baerocatCV.imgPath)
+
+#Do something with LED after processing - signals end of launch
+#This means the TRIPOD can be shutdown
+#COMMAND
+
 
 # Perform Geolocation operation
 #>>>>Weighted average function/calculation

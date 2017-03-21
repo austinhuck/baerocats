@@ -14,7 +14,6 @@ def _GpsWorker():
         print "Waiting"
         sample = _gps.next()
         print "Recieved {0}".format(sample['class'])
-        print sample
         if sample['class'] == 'TPV':
             
             if hasattr(sample, 'time'):
@@ -33,7 +32,6 @@ def _GpsWorker():
             if hasattr(sample, 'lon'):
                 print "lon"
                 _longitude = sample.lon
-
 
 _gps = gps.gps("localhost", "2947")
 _gps.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)

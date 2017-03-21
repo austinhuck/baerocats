@@ -153,30 +153,34 @@ class TDC:
 
     def _GpsWorker(self):
         while not self._gpsStopEvent.isSet():
-            sample = self._gps.next()
-            if sample['class'] == 'TPV':
-                with self._gpsLock:
-                    # TODO: Sync pi system time
-                    if hasattr(sample, 'time'):
-                        pass
+            try:
+                sample = self._gps.next()
+                if sample['class'] == 'TPV':
+                    with self._gpsLock:
+                        # TODO: Sync pi system time
+                        if hasattr(sample, 'time'):
+                            pass
 
-                    # Determine the fix, this may not always be present.
-                    if hasattr(sample, 'fix'):
-                        self._fix = sample.fix
-                    else:
-                        self._fix = false
+                        # Determine the fix, this may not always be present.
+                        if hasattr(sample, 'fix'):
+                            self._fix = sample.fix
+                        else:
+                            self._fix = False
 
-                    # Get latitude and longitude attributes.
-                    if hasattr(sample, 'lat'):
-                        self._latitude = sample.lat
-                    if hasattr(sample, 'lon'):
-                        self._longitude = sample.lon
+                        # Get latitude and longitude attributes.
+                        if hasattr(sample, 'lat'):
+                            self._latitude = sample.lat
+                        if hasattr(sample, 'lon'):
+                            self._longitude = sample.lon
+            except Exception as e:
+                Log.Log(str(e))
 
     def _IsRecording(self):
         return not self._tdcStopEvent.isSet() and self._tdcThread.isAlive()
 
     def _RadioWorker(self):
         while not self._radioStopEvent.isSet():
+## TODO: This is too slow, but somewhat needed.
 ##            with self._imuLock:
 ##                with self._gpsLock:
 ##                    with self._altLock:
@@ -242,7 +246,8 @@ class TDC:
             while not self._tdcStopEvent.isSet():
                 self._dataFile.write(self._GetSampleString())
                 self._tdcStopEvent.wait(self._interval)
-
+        except Exception as e:
+            Log.Log(str(e))
         finally:
             #Always close the output file
             if self._dataFile is not None:
@@ -268,7 +273,7 @@ class TDC:
                 self._dataFile.close()
                 self._dataFile = None
 
-        #self._radio = Transmitting.Radio()
+        self._radio = Transmitting.Radio()
         self._radioStopEvent = threading.Event()
         self._radioThread = threading.Thread(target=self._RadioWorker, name='Radio')
         self._radioThread.daemon = False
@@ -308,7 +313,11 @@ class TDC:
             if self._IsRecording() and TDC._altRecord:
                 alt = self._altitude
             else:
-                alt = self._ReadAlt()
+                try:
+                    alt = self._ReadAlt()
+                except Exception as e:
+                    Log.Log(str(e))
+                    alt = self._altitude
                 
         return alt
 
@@ -369,13 +378,13 @@ class TDC:
         self._tdcStopEvent.clear()
         self._radioStopEvent.clear()
         self._tdcThread.start()
-        #self._radioThread.start()
+        self._radioThread.start()
         return self._tdcThread.isAlive() and self._radioThread.isAlive()
 
     def Stop(self, timeout=5):
         # Flag worker thread to stop and wait for stop
         self._radioStopEvent.set()
         self._tdcStopEvent.set()
-        #self._radioThread.join(timeout)
+        self._radioThread.join(timeout)
         self._tdcThread.join(timeout)
         return not self._tdcThread.isAlive() and not self._radioThread.isAlive()

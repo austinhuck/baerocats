@@ -42,7 +42,7 @@ void DataMessage::getData(byte * buffer) const
 {
 	// The base message fills the buffer first.
 	Message::getData(buffer);
-1
+
 	byte * insertPtr = buffer + UNKNOWN_SIZE;
 
 	memcpy(insertPtr, &Latitude, 4);
