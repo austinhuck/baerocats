@@ -100,7 +100,7 @@ print('Waiting for Activation Switch (GPIO 17)')
 #Make launch directory and flight log file    
 from Logger import Log
 t0 = Log.t0 #Get initial time for timing everything
-from baerocatCV import Imaging
+from BaerocatsCV import Imaging
 
 #Create a Flight Log file for logging information about flight phases
 Log.Log('Ground Phase 1: Start Up') #report to flight log

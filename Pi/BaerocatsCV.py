@@ -427,59 +427,59 @@ class Imaging:
 #               Proper Usage
 ##############################################################################        
 '''
-#create instance of baerocatCV
+#create instance of BaerocatsCV
 from Logger import Log
-baerocatCV = Imaging(Log)
+BaerocatsCV = Imaging(Log)
 
 #When imaging is wanted
-baerocatCV.Initialize(20)
+BaerocatsCV.Initialize(20)
 
 #See if camera is initialized correctly, then continue
-if baerocatCV.Cancel == False:
-    with baerocatCV.camera:
+if BaerocatsCV.Cancel == False:
+    with BaerocatsCV.camera:
         for x in xrange(5):
             #alt = TDC.GetAltitude()-alt0 #altitude - Z
             alt = 600+x*10 - 300
             
             #Check to see if cancelled again
-            if baerocatCV.Cancel == False:
-                baerocatCV.DescentImaging(alt)
+            if BaerocatsCV.Cancel == False:
+                BaerocatsCV.DescentImaging(alt)
             else:
                 Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
                 break
         
         Log.Log('Image Capture Phase Complete:\n\t \
             Altitude of %d has been reached \n\t \
-            %d successful images captured' %(200,baerocatCV.imageSuccess))
+            %d successful images captured' %(200,BaerocatsCV.imageSuccess))
 else:
     Log.Log('Imaging cancelled because of failure to initiate')
 
 #After Landing
-baerocatCV.CameraShutdown()
+BaerocatsCV.CameraShutdown()
 
-#baerocatCV.ProcessAll(baerocatCV.imgPath)
+#BaerocatsCV.ProcessAll(BaerocatsCV.imgPath)
 '''
 
 #####################################################################
-#          Correct implementation of baerocatCV below
+#          Correct implementation of BaerocatsCV below
 #####################################################################
 '''
 ######################################
 #     *******Ground Phase
 ######################################
-#create instance of baerocatCV
+#create instance of BaerocatsCV
 from Logger import Log
-baerocatCV = Imaging(Log)
+BaerocatsCV = Imaging(Log)
 
 ######################################
 # *******Flight Phase
 ######################################
 #When imaging is wanted
-baerocatCV.Initialize(30) #Try to initilialize for 30 attempts - ~30 seconds
+BaerocatsCV.Initialize(30) #Try to initilialize for 30 attempts - ~30 seconds
 
 #See if camera is initialized correctly, then continue
-if baerocatCV.Cancel == False:
-    with baerocatCV.camera:
+if BaerocatsCV.Cancel == False:
+    with BaerocatsCV.camera:
         Get one data point to check altitude
         alt = TDC.GetAltitude()-alt0 #altitude - Z
         
@@ -487,10 +487,10 @@ if baerocatCV.Cancel == False:
         while alt > 200:
             alt = TDC.GetAltitude()-alt0 #altitude - Z
             
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             #Check to see if cancelled due to connection loss
-            if baerocatCV.Cancel == False:
-                baerocatCV.DescentImaging(alt)
+            if BaerocatsCV.Cancel == False:
+                BaerocatsCV.DescentImaging(alt)
             else:
                 Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
                 break
@@ -498,7 +498,7 @@ if baerocatCV.Cancel == False:
         #Log that imaging is complete
         Log.Log('Image Capture Phase Complete:\n\t \
             Altitude of %d has been reached \n\t \
-            %d successful images captured' %(200,baerocatCV.imageSuccess))        
+            %d successful images captured' %(200,BaerocatsCV.imageSuccess))        
     else:
         Log.Log('Imaging cancelled due to failure to initiate')
 
@@ -506,14 +506,14 @@ if baerocatCV.Cancel == False:
 # *******Post Landing Phase
 ######################################
 #Shutdown the camera
-baerocatCV.CameraShutdown()
+BaerocatsCV.CameraShutdown()
 
 #Do something with the LED before processing
 #THIS MEANS TRIPOD IS STILL FUNCTIONING AND SHOULD NOT BE SHUT OFF 
 #COMMAND
 
 #Process images
-baerocatCV.ProcessAll(baerocatCV.imgPath)
+BaerocatsCV.ProcessAll(BaerocatsCV.imgPath)
 
 #Do something with LED after processing - signals end of launch
 #This means the TRIPOD can be shutdown
