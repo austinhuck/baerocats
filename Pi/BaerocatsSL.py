@@ -125,7 +125,8 @@ def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
 #-------> USER INPUTS
 #####################################
 
-mode = 'launch'
+mode = 'test'
+#mode = 'launch'
 
 #Define GPIO Pins
 startupSwitchGpio = 17 #Activation Switch GPIO pin 1
@@ -157,7 +158,7 @@ print('Waiting for Activation Switch (GPIO 17)')
 
 #First wait for main switch to signal to TRIPOD to start the rest of program
 while getSwitch(startupSwitchGpio) == False:
-    pass
+    time.sleep(0.1)
 ######################################  
 #-------> Ground Phase 1: Start up
 ######################################
@@ -166,7 +167,7 @@ while getSwitch(startupSwitchGpio) == False:
 from Logger import Log
 t0 = Log.t0 #Get initial time for timing everything
 Log.Log(str(Log.imgPath)+str(Log.processedPath))
-from baerocatCV import Imaging
+from BaerocatsCV import Imaging
 
 #Create a Flight Log file for logging information about flight phases
 Log.Log('Ground Phase 1: Start Up') #report to flight log
@@ -201,8 +202,22 @@ Log.Log('Debug LED ignited')
 
 #Servo Code
 servo = ServoControl.ServoControl(servoSwitchGpio,servoActuateGpio)
+time.sleep(0.5)
+
+#Actuate servo based on switch input.
+#Report servo status every second
 while getSwitch(inRocketSwitchGpio) == False:
-    servo.checkServoSwitch()
+
+    if servo.IsServoOpen():
+        Log.Log('Servo Open')
+    else:
+        Log.Log('Servo Closed')
+    
+    reps = 0
+    while getSwitch(inRocketSwitchGpio) == False and reps < 10:
+        servo.CheckServoSwitch()
+        time.sleep(0.1)
+        reps = reps + 1
 
 Log.Log('TRIPOD Legs Set Up') #report to flight log    
 
@@ -266,53 +281,53 @@ time.sleep(5)
 Log.Log('Flight Phase 3: Descent') #report to flight log
 
 #Initialize camera to get capture settings
-baerocatCV = Imaging(Log)
+BaerocatsCV = Imaging(Log)
 
 
 if mode == 'test':
     Log.Log('Test mode initiated.')
-    baerocatCV.Initialize(10)
-    if baerocatCV.Cancel == False:
-        with baerocatCV.camera:
+    BaerocatsCV.Initialize(10)
+    if BaerocatsCV.Cancel == False:
+        with BaerocatsCV.camera:
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)        
+            BaerocatsCV.DescentImaging(alt)        
             alt = tdc.GetAltitude()-alt0
-            baerocatCV.DescentImaging(alt)
+            BaerocatsCV.DescentImaging(alt)
     else:
         Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
 elif mode == 'launch':
     Log.Log('Launch mode initiated.')
-    baerocatCV.Initialize(30)
-    if baerocatCV.Cancel == False:
-        with baerocatCV.camera:
+    BaerocatsCV.Initialize(30)
+    if BaerocatsCV.Cancel == False:
+        with BaerocatsCV.camera:
             #Get one data point to check altitude
             alt = tdc.GetAltitude()-alt0 #altitude - Z
 
@@ -322,10 +337,10 @@ elif mode == 'launch':
             while alt > 200: #numPhotos < 75:   #
                 alt = tdc.GetAltitude()-alt0 #altitude - Z
                 #numPhotos = numPhotos + 1
-                #baerocatCV.DescentImaging(alt)
+                #BaerocatsCV.DescentImaging(alt)
                 #Check to see if cancelled due to connection loss
-                if baerocatCV.Cancel == False:
-                    baerocatCV.DescentImaging(alt)
+                if BaerocatsCV.Cancel == False:
+                    BaerocatsCV.DescentImaging(alt)
                 else:
                     Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
                     break
@@ -333,12 +348,12 @@ elif mode == 'launch':
             #Log that imaging is complete
             Log.Log('Image Capture Phase Complete:\n\t \
                 Altitude of %d has been reached \n\t \
-                %d successful images captured' %(200,baerocatCV.imageSuccess))        
+                %d successful images captured' %(200,BaerocatsCV.imageSuccess))        
     else:
         Log.Log('Imaging cancelled due to failure to initiate')
 
 #Shutdown the camera
-baerocatCV.CameraShutdown()
+BaerocatsCV.CameraShutdown()
   
 ######################################  
 # -------> Flight Phase 4: Landering
@@ -361,6 +376,7 @@ Log.Log('Flight Phase 5: Fallen Lander Upstandering') #report to flight log
 
 #Command leg servo to open
 servo.LandServo()
+Log.Log('Servo landing activated')
 
 ######################################  
 # -------> Flight Phase 6: Fallen Upstanded Lander Bystandering
@@ -372,7 +388,7 @@ Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to fligh
 #COMMAND
 
 #Process images
-#baerocatCV.ProcessAll(baerocatCV.imgPath)
+#BaerocatsCV.ProcessAll(BaerocatsCV.imgPath)
 
 #Do something with LED after processing - signals end of launch
 #This means the TRIPOD can be shutdown
@@ -384,11 +400,12 @@ Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to fligh
 
 #while loop keeps the TRIPOD transmitting until a switch is pressed
 while getSwitch(startupSwitchGpio) == True:
-    time.sleep(5)
+    time.sleep(0.1)
 
 ######################################     
 # -------> End of Program
 ######################################
 Log.Log('End of launch, rest in pepperonis') #report to flight log 
 tdc.Stop() #Shutdown TDC
+radio.Shutdown() #Shutdown Radio
 GPIO.cleanup() #cleanup GPIO

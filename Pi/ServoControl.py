@@ -6,7 +6,7 @@
 #******Implementation Notes*******
 #import ServoControl
 #servo = ServoControl.ServoControl(17,6)
-#servo.checkServoSwitch()
+#servo.CheckServoSwitch()
 
 import RPi.GPIO as GPIO
 import time
@@ -27,22 +27,18 @@ class ServoControl:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(Switch,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(Servo,GPIO.OUT)
-        time.sleep(1)
 
     def __del__(self):
         GPIO.cleanup()
 
-    def checkServoSwitch(self):
+    def CheckServoSwitch(self):
         if GPIO.input(self.Switch):
             GPIO.output(self.Servo,GPIO.HIGH)
-            Log.Log('Servo Open')
         else:
             GPIO.output(self.Servo,GPIO.LOW)
-            Log.Log('Servo Closed')
-        time.sleep(1)
+
+    def IsServoOpen(self):
+        return GPIO.input(self.Servo)
             
     def LandServo(self):
         GPIO.output(self.Servo,GPIO.HIGH)
-        Log.Log('Servo landing activated')
-    
-
