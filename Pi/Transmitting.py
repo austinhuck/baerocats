@@ -1,11 +1,13 @@
 from Singleton import Singleton
 from xbee import ZigBee
+from Logger import Log
 
 import Queue
 import serial
 import struct
 import threading
 import time
+import os
 
 class Radio(object):
     __metaclass__ = Singleton
@@ -22,9 +24,7 @@ class Radio(object):
         self._threadShutdown = threading.Event()
 
     def __del__(self):
-        self._threadShutdown.set()
-        self._thread.join(0.1)
-        self._xbee.halt()
+        self.Shutdown()
 
     def _Receive(self, data):
         # Check the type of message
@@ -32,7 +32,47 @@ class Radio(object):
         # Parse the message data
 
         # Add the message to the receive queue
+        Log.Log('Transmitting: Received [{}]'.format(data))
         pass
+
+    def _ConnectRadio(self):
+        connected = False
+        scans = 0
+        portNumber = 0
+        
+        Log.Log('Transmitting: Scanning USB Hub for Radio')
+
+        # Scan until connected or scanned 10 times
+        while not connected and scans < 10:
+            port = '/dev/ttyUSB{}'.format(portNumber)
+            if os.path.exists(port):
+                Log.Log('Transmitting: Attempting to connect radio on {}'.format(port))
+                try:
+                    self._ser = serial.Serial(port=port, baudrate=115200)
+                    self._xbee = ZigBee(self._ser, callback=self._Receive)
+                    connected = self._ValidateConnection()
+                except Exception as e:
+                    Log.Log('Transmitting: ' + str(e))
+
+            if portNumber < 256:
+                portNumber = portNumber + 1
+            else:
+                portNumber = 0
+                scans = scans + 1
+                time.sleep(0.1)
+
+        if connected:
+            Log.Log('Transmitting: Radio connected on {}'.format(port))
+        else:        
+            Log.Log('Transmitting: Failed to find radio after 10 scans')        
+
+    def _ValidateConnection(self):
+        if self._ser is None or self._xbee is None:
+            return False
+
+        # This should pull some setting from the radio to validate the USB
+        # device is actually the radio but nothing else should be connected.
+        return True
 
     def _Worker(self):
         while not self._threadShutdown.isSet():
@@ -46,13 +86,12 @@ class Radio(object):
                         dest_addr=b'\xFF\xFE',
                         data = message.GetData())
                 except Exception as e:
-                    Log.Log(str(e))
+                    Log.Log('Transmitting: ' + str(e))
             except Queue.Empty:
                 pass
              
-    def Initialize(self, port='/dev/ttyUSB0'):
-        self._ser = serial.Serial(port=port, baudrate=115200)
-        self._xbee = ZigBee(self._ser, callback=self._Receive)
+    def Initialize(self):
+        self._ConnectRadio()
         self._thread.start()
 
     def Receive(self):
@@ -70,8 +109,12 @@ class Radio(object):
 
     def Shutdown(self):
         self._threadShutdown.set()
-        self._thread.join()
-        self._xbee.halt()
+        if self._thread.is_alive():
+            self._thread.join(1)
+        if self._xbee is not None:
+            self._xbee.halt()
+        if self._ser is not None:
+            self._ser.close()
 
 class Message(object):    
     # Message Type 'Enums'

@@ -125,7 +125,8 @@ def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
 #-------> USER INPUTS
 #####################################
 
-mode = 'launch'
+mode = 'test'
+#mode = 'launch'
 
 #Define GPIO Pins
 startupSwitchGpio = 17 #Activation Switch GPIO pin 1
@@ -157,7 +158,7 @@ print('Waiting for Activation Switch (GPIO 17)')
 
 #First wait for main switch to signal to TRIPOD to start the rest of program
 while getSwitch(startupSwitchGpio) == False:
-    pass
+    time.sleep(0.1)
 ######################################  
 #-------> Ground Phase 1: Start up
 ######################################
@@ -201,8 +202,22 @@ Log.Log('Debug LED ignited')
 
 #Servo Code
 servo = ServoControl.ServoControl(servoSwitchGpio,servoActuateGpio)
+time.sleep(0.5)
+
+#Actuate servo based on switch input.
+#Report servo status every second
 while getSwitch(inRocketSwitchGpio) == False:
-    servo.checkServoSwitch()
+
+    if servo.IsServoOpen():
+        Log.Log('Servo Open')
+    else:
+        Log.Log('Servo Closed')
+    
+    reps = 0
+    while getSwitch(inRocketSwitchGpio) == False and reps < 10:
+        servo.CheckServoSwitch()
+        time.sleep(0.1)
+        reps = reps + 1
 
 Log.Log('TRIPOD Legs Set Up') #report to flight log    
 
@@ -361,6 +376,7 @@ Log.Log('Flight Phase 5: Fallen Lander Upstandering') #report to flight log
 
 #Command leg servo to open
 servo.LandServo()
+Log.Log('Servo landing activated')
 
 ######################################  
 # -------> Flight Phase 6: Fallen Upstanded Lander Bystandering
@@ -384,11 +400,12 @@ Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to fligh
 
 #while loop keeps the TRIPOD transmitting until a switch is pressed
 while getSwitch(startupSwitchGpio) == True:
-    time.sleep(5)
+    time.sleep(0.1)
 
 ######################################     
 # -------> End of Program
 ######################################
 Log.Log('End of launch, rest in pepperonis') #report to flight log 
 tdc.Stop() #Shutdown TDC
+radio.Shutdown() #Shutdown Radio
 GPIO.cleanup() #cleanup GPIO
