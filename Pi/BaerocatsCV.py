@@ -11,6 +11,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 from picamera import exc
 from Logger import Log
+import RPi.GPIO as GPIO
 
 #Set timeout for image check
 PiCamera.CAPTURE_TIMEOUT = 5
@@ -240,43 +241,68 @@ class Imaging:
 
             
     #Baerocats designed CV program, 3 colors
-    def imgProcess(self,img,alt):
+    def imgProcess(self,img):
         if img is not None:
             #Convert to HSV Space
-            imgHSV = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
+            imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) 
 
             #Threshold the HSV image to get three colors
-            mask1 = cv2.inRange(imgHSV, self.lower_red, self.upper_red)
-            mask2 = cv2.inRange(imgHSV, self.lower_blue, self.upper_blue)
-            mask3 = cv2.inRange(imgHSV, self.lower_yellow, self.upper_yellow)
+            mask_red = cv2.inRange(imgHSV, self.lower_red, self.upper_red)
+            mask_blue = cv2.inRange(imgHSV, self.lower_blue, self.upper_blue)
+            mask_yellow = cv2.inRange(imgHSV, self.lower_yellow, self.upper_yellow)
 
             #Create Image for output
             processed = img
          
             #Moment Calculations
-            dmp1,contour1,hierarchy1 = cv2.findContours(mask1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            dmp2,contour2,hierarchy2 = cv2.findContours(mask2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            dmp3,contour3,hierarchy3 = cv2.findContours(mask3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            contourList = [contour1,contour2,contour3]
+            dmp1,contour_red,hierarchy1 = cv2.findContours(mask_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            dmp2,contour_blue,hierarchy2 = cv2.findContours(mask_blue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            dmp3,contour_yellow,hierarchy3 = cv2.findContours(mask_yellow, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contourList = [contour_red,contour_blue,contour_yellow]
             
             #Loop through contours
             for i,color in enumerate(['red','blue','yellow']):
                 
-                #Check to see if there are contours
+                #Check too see if there are contours
                 if len(contourList[i]) > 0:
-                    for c in contourList[i][0]:
+                    for c in contourList[i]:
                         M = cv2.moments(c)
-                        #if M["m00"] > area-areaSlop:
-                        if M["m00"] > 30:
-                            Log.ImageLog('        '+color+':   '+str(M["m00"]))
-                            cX = int(M["m10"] / M["m00"]) #centroid x coordinate
-                            cY = int(M["m01"] / M["m00"]) #centroid y coordinate
+                        
+                        #Check to see if area is ridiculous            
+                        if M["m00"] > 10 ** 2:
+                            #Calculate perimeter of contour
+                            perimeter = cv2.arcLength(c,True)
                             
-                            # draw the contour and center of the shape on the images
-                            cv2.drawContours(processed, [c], -1, (0, 255, 0), 3)
-                            cv2.circle(processed, (cX, cY), 7, (255, 255, 255), -1)
-                            cv2.putText(processed, color, (cX - 20, cY - 20),
-                                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                            #Calculate Minimum area rectangle
+                            rect = cv2.minAreaRect(c)
+                            (width,height) = rect[1]
+                            
+                            #check to see if perimeter/area is ridiculous
+                            perimThresh  =  ((4 * M["m00"] ** 0.5) / M["m00"]) 
+                            if perimeter/M["m00"] < perimThresh * 5:
+                                perimCheck = True
+                            else:
+                                perimCheck = False
+                            
+                            #check to see if aspect ratio is ridiculous
+                            aspectRatio = width/height #aspect ratio
+                            aspectThresh = 2.5
+                            if aspectRatio > 1/aspectThresh and aspectRatio < aspectThresh:
+                                shapeCheck = True
+                            else:
+                                shapeCheck = False
+                            
+                            #Check to see if contour meets two three checks
+                            if perimCheck and shapeCheck:
+                                Log.ImageLog('        '+color+' - '+str(M["m00"]))
+                                cX = int(M["m10"] / M["m00"]) #centroid x coordinate
+                                cY = int(M["m01"] / M["m00"]) #centroid y coordinate
+                                
+                                # draw the contour and center of the shape on the images
+                                cv2.drawContours(processed, [c], -1, (0, 255, 0), 3)
+                                cv2.circle(processed, (cX, cY), 7, (255, 255, 255), -1)
+                                cv2.putText(processed, color, (cX - 20, cY - 20),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
                 else: 
                     #This executes if no contours are found for a given color
                     Log.ImageLog('        No %s contours found'%color)
@@ -286,6 +312,7 @@ class Imaging:
         #If the image array is NoneType
         else:
             Log.ImageLog('        Image file is blank')
+            return img
 
         
     #Function estimates area of expected target at given altitude,resolution            
@@ -325,7 +352,7 @@ class Imaging:
     
     
     #Defines function that applies linear weighted average to GPS list
-    def GeolocateWeightedAverage(self,aveType):
+    def GeolocateWeightedAverage(self,latGPS,lonGPS,alt,aveType):
         #This program may or may not need to have section for importing data from file
         
         #Preallocate space for weights
@@ -373,10 +400,14 @@ class Imaging:
             self.imgCapture()
 
 
-    def ProcessAll(self,path):
+    def ProcessAll(self,path,ledGPIO):
         Log.Log('Attempting to process images')
         try:
             for file in os.listdir(path):
+                self.debugLED(ledGPIO,0)
+                time.sleep(.2)
+                self.debugLED(ledGPIO,1)
+                
                 if file.endswith(self.imgExtension):
                     Log.ImageLog('Processing '+file)
                     #Process Image
@@ -393,13 +424,13 @@ class Imaging:
                         for line in f:
                             rec = line.strip()
                             if rec.split(', ')[1] == timeStamp:
-                                alt = float(rec.split(', ')[2])
+                                #alt = float(rec.split(', ')[2])
                                 
                                 #set image index for processed file name
                                 self.imageIndex = int(float(rec.split(', ')[0]))
                     
                     #Process Image
-                    processed = self.imgProcess(img,alt)
+                    processed = self.imgProcess(img)
                     
                     #Save Processed Image
                     self.imgSave(processed,'processed')
@@ -423,12 +454,55 @@ class Imaging:
         except Exception as e:
             Log.Log('Exception occurred when shutting down camera\n\t'+str(e))
     
+    def debugLED(self,ledPin, systemGood):
+        if systemGood == 1:
+            GPIO.output(ledPin,GPIO.HIGH)
+        else:
+            GPIO.output(ledPin,GPIO.LOW)
+    
+
+    #This is used for real time testing of camera software
+    def RealTime(self):
+        #Set settings for real time test
+        self.xResolution = 1240
+        self.yResolution = 720
+        self.framerate = 20
+        baerocatCV.Initialize(5)
+        rawCapture = PiRGBArray(self.camera)
+        
+        with self.camera:
+            #continuous capture and processing
+            for frame in self.camera.capture_continuous(rawCapture, format = 'bgr', use_video_port = True):
+                #Capture image
+                img = rawCapture.array
+
+                #Process image
+                processed = self.imgProcess(img)
+
+                #Display processed image
+                cv2.imshow("Processed frame",processed)
+                key = cv2.waitKey(1) & 0xFF
+
+                #Clear rawCapture for next image
+                rawCapture.truncate(0)
+
+                #check if q or escape key is pressed to exit loop
+                if key == ord("q") or key == 27:
+                    break            
+
 ##############################################################################
-#               Proper Usage
+#               Test Section
 ##############################################################################        
+
 '''
+
+ledGPIO = 12 #24 #System Check GPIO Pin
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+import RPi.GPIO as GPIO
+GPIO.setup(ledGPIO,GPIO.OUT)
+
 #create instance of BaerocatsCV
-from Logger import Log
 BaerocatsCV = Imaging(Log)
 
 #When imaging is wanted
@@ -457,8 +531,7 @@ else:
 #After Landing
 BaerocatsCV.CameraShutdown()
 
-#BaerocatsCV.ProcessAll(BaerocatsCV.imgPath)
-'''
+BaerocatsCV.ProcessAll(BaerocatsCV.imgPath,ledGPIO)'''
 
 #####################################################################
 #          Correct implementation of BaerocatsCV below
@@ -468,7 +541,6 @@ BaerocatsCV.CameraShutdown()
 #     *******Ground Phase
 ######################################
 #create instance of BaerocatsCV
-from Logger import Log
 BaerocatsCV = Imaging(Log)
 
 ######################################

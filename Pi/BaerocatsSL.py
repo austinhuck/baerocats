@@ -129,10 +129,10 @@ mode = 'test'
 #mode = 'launch'
 
 #Define GPIO Pins
-startupSwitchGpio = 17 #Activation Switch GPIO pin 1
-inRocketSwitchGpio = 22 #Put-TRIPOD-in-Rocket Switch GPIO pin 1
+startupSwitchGpio = 22 #Activation Switch GPIO pin 1
+inRocketSwitchGpio = 17 #Put-TRIPOD-in-Rocket Switch GPIO pin 1
 ledGPIO = 12 #24 #System Check GPIO Pin
-servoActuateGpio = 26 #Servo actuation pin
+servoActuateGpio = 18 #Servo actuation pin
 servoSwitchGpio = 27 #Servo switch pin
 
 #Landing detection settings:
@@ -157,8 +157,16 @@ GPIO.setup(ledGPIO,GPIO.OUT)
 print('Waiting for Activation Switch (GPIO 17)')
 
 #First wait for main switch to signal to TRIPOD to start the rest of program
+flasher=1
 while getSwitch(startupSwitchGpio) == False:
-    time.sleep(0.1)
+    #flash led until start-up switch
+    if flasher==0:
+        flasher=1
+        debugLED(ledGPIO,0)
+    elif flasher==1:
+        flasher=0
+        debugLED(ledGPIO,1)
+    time.sleep(0.5)
 ######################################  
 #-------> Ground Phase 1: Start up
 ######################################
@@ -245,8 +253,34 @@ Log.Log('Ground Altitude Measured (feet), '+str(alt0))
 
 #Wait to be put in the rocket
 if mode == 'test':
+    #flash LED to indicate LS threshold and altitude calibration success
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
     time.sleep(5) 
 elif mode == 'launch':
+    #flash LED to indicate LS threshold and altitude calibration success
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
+    debugLED(ledGPIO,0)
+    time.sleep(.5)
+    debugLED(ledGPIO,1)
+    time.sleep(.5)
     time.sleep(60)
 
 ######################################
@@ -289,53 +323,28 @@ if mode == 'test':
     BaerocatsCV.Initialize(10)
     if BaerocatsCV.Cancel == False:
         with BaerocatsCV.camera:
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)        
-            alt = tdc.GetAltitude()-alt0
-            BaerocatsCV.DescentImaging(alt)
+            for n in xrange(16):
+                alt = tdc.GetAltitude()-alt0
+                BaerocatsCV.DescentImaging(alt)         
     else:
         Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
 elif mode == 'launch':
     Log.Log('Launch mode initiated.')
     BaerocatsCV.Initialize(30)
+    DescentTime0=time.time()
+    DescentTime=0
     if BaerocatsCV.Cancel == False:
         with BaerocatsCV.camera:
             #Get one data point to check altitude
             alt = tdc.GetAltitude()-alt0 #altitude - Z
-
+            
             #TEMPORARY ALTITUDE IGNORE
             #numPhotos = 0
             #Descent Imaging Phase
-            while alt > 200: #numPhotos < 75:   #
+            while alt > 200 and DescentTime < 270: #numPhotos < 75:   #
                 alt = tdc.GetAltitude()-alt0 #altitude - Z
+                DescentTime = time.time()-DescentTime0
+                Log.Log('Descent Time : ' + str(DescentTime) + 'Seconds')
                 #numPhotos = numPhotos + 1
                 #BaerocatsCV.DescentImaging(alt)
                 #Check to see if cancelled due to connection loss
@@ -383,12 +392,8 @@ Log.Log('Servo landing activated')
 ######################################
 Log.Log('Flight Phase 6: Fallen Upstanded Lander Bystandering') #report to flight log
 
-#Do something with the LED before processing
-#THIS MEANS TRIPOD IS STILL FUNCTIONING AND SHOULD NOT BE SHUT OFF 
-#COMMAND
-
 #Process images
-#BaerocatsCV.ProcessAll(BaerocatsCV.imgPath)
+BaerocatsCV.ProcessAll(BaerocatsCV.imgPath,ledGPIO)
 
 #Do something with LED after processing - signals end of launch
 #This means the TRIPOD can be shutdown

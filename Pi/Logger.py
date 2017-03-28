@@ -2,6 +2,7 @@
 
 import os
 import time
+import shutil
 
 class logger:
     launchPath = ""
@@ -44,18 +45,27 @@ class logger:
     #Get present working directory, and make files paths for data storage
     def launchDirectory(self, pwd):
         #launchDir = time.strftime('LAUNCH_%Y-%m-%d_%H-%M-%S')
-        launchDir = time.strftime('LAUNCH_%Y-%b%d_%H-%M-%S%p')
+        dircreate=0
+        appender=0
+        launchDir = time.strftime('LAUNCH')
         launchPath = os.path.join(pwd, launchDir)
+        while dircreate==0:
+            appender += 1
+            launchPath_new = launchPath + str(appender)
+            if not os.path.exists(launchPath_new):
+                os.makedirs(launchPath_new) #directory to store all launch information
+                dircreate=1
+            else:
+                pass
+        
+        #make appropriate directory paths
+        launchPath = launchPath_new
         imgPath = os.path.join(launchPath, 'raw')
         processedPath = os.path.join(launchPath, 'processed')
 
         #make appropriate directories
-        if not os.path.exists(launchPath):
-            os.makedirs(launchPath) #directory to store all launch information
-        if not os.path.exists(imgPath):
-            os.makedirs(imgPath) #directory to store raw images
-        if not os.path.exists(processedPath):
-            os.makedirs(processedPath) #directory to store processed images
+        os.makedirs(imgPath) #directory to store raw images
+        os.makedirs(processedPath) #directory to store processed images
 
 
         return launchPath, imgPath, processedPath
@@ -79,6 +89,7 @@ class logger:
     def ImageLog(self, stringToLog):
         ImageLog = open(self.ImageLogFile, 'a+')
         ImageLog.write(stringToLog + '\n')
+        print stringToLog
         ImageLog.close()
 
     #Record geolocation calculation results to a file
