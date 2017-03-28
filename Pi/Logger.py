@@ -3,6 +3,7 @@
 import os
 import time
 import shutil
+import inspect
 
 class logger:
     launchPath = ""
@@ -74,7 +75,10 @@ class logger:
     def Log(self, stringToLog):
         flightLog = open(self.logFile, 'a+')
         #content = str(time.time() - self.t0) + ', ' + stringToLog.replace(',', '')
-        content = str(time.time() - self.t0) + ', ' + stringToLog
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        callerName = calframe[1][3]
+        content = str(time.time() - self.t0) + ' (' + callerName + ') ' + stringToLog
         flightLog.write(content + '\n')
         print(content)
         flightLog.close()

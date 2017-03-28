@@ -341,7 +341,7 @@ elif mode == 'launch':
             #TEMPORARY ALTITUDE IGNORE
             #numPhotos = 0
             #Descent Imaging Phase
-            while alt > 200 and DescentTime < 270: #numPhotos < 75:   #
+            while alt > 200 : #numPhotos < 75:   #
                 alt = tdc.GetAltitude()-alt0 #altitude - Z
                 DescentTime = time.time()-DescentTime0
                 Log.Log('Descent Time : ' + str(DescentTime) + 'Seconds')

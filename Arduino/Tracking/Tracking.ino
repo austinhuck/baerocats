@@ -129,7 +129,7 @@ void setup()
 	}
 	
 	// XBee Serial (Serial1)
-	Serial1.begin(115200);
+	Serial1.begin(19200);
 	xbee = new XBeeComm(Serial1);
 
 	if (xbee->CheckRadio())
@@ -183,19 +183,19 @@ void setup()
 	gps->sendCommand(PMTK_API_SET_FIX_CTL_1HZ);
 
 	// Activate buzzer to indicate successful setup
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 3500; j < 4500; j += 10)
+		for (int j = 3000; j < 5000; j += 20)
 		{
 			tone(Buzzer, j);
-			delay(1);
+			delay(2);
 		}
 
-		for (int j = 4500; j > 3500; j -= 10)
-		{
-			tone(Buzzer, j);
-			delay(1);
-		}
+//		for (int j = 4500; j > 3500; j -= 10)
+//		{
+//			tone(Buzzer, j);
+//			delay(1);
+//		}
 	}
 
 	noTone(Buzzer);

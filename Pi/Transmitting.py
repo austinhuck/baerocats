@@ -33,7 +33,6 @@ class Radio(object):
 
         # Add the message to the receive queue
         Log.Log('Transmitting: Received [{}]'.format(data))
-        pass
 
     def _ConnectRadio(self):
         connected = False
@@ -48,7 +47,7 @@ class Radio(object):
             if os.path.exists(port):
                 Log.Log('Transmitting: Attempting to connect radio on {}'.format(port))
                 try:
-                    self._ser = serial.Serial(port=port, baudrate=115200)
+                    self._ser = serial.Serial(port=port, baudrate=19200)
                     self._xbee = ZigBee(self._ser, callback=self._Receive)
                     connected = self._ValidateConnection()
                 except Exception as e:
