@@ -125,8 +125,8 @@ def Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO):
 #-------> USER INPUTS
 #####################################
 
-mode = 'test'
-#mode = 'launch'
+#mode = 'test'
+mode = 'launch'
 
 #Define GPIO Pins
 startupSwitchGpio = 22 #Activation Switch GPIO pin 1
@@ -136,7 +136,7 @@ servoActuateGpio = 18 #Servo actuation pin
 servoSwitchGpio = 27 #Servo switch pin
 
 #Landing detection settings:
-WThresh = 0.05 #rad/s
+WThresh = 0.06 #rad/s
 DescRateThresh = 5 #ft/s
 BlockSize = 10 #number of samples to average
 SampleRate = 2 #Hz
@@ -281,7 +281,7 @@ elif mode == 'launch':
     time.sleep(.5)
     debugLED(ledGPIO,1)
     time.sleep(.5)
-    time.sleep(60)
+    time.sleep(120)
 
 ######################################
 #-------> Ground Phase 5: Waiting for launch on pad
@@ -337,15 +337,11 @@ elif mode == 'launch':
         with BaerocatsCV.camera:
             #Get one data point to check altitude
             alt = tdc.GetAltitude()-alt0 #altitude - Z
-            
-            #TEMPORARY ALTITUDE IGNORE
-            #numPhotos = 0
+
+            DescentTime = time.time() - DescentTime0
             #Descent Imaging Phase
-            while alt > 200 : #numPhotos < 75:   #
+            while (alt > 200 or DescentTime < 130) and DescentTime < 250: #numPhotos < 75:   #
                 alt = tdc.GetAltitude()-alt0 #altitude - Z
-                DescentTime = time.time()-DescentTime0
-                Log.Log('Descent Time : ' + str(DescentTime) + 'Seconds')
-                #numPhotos = numPhotos + 1
                 #BaerocatsCV.DescentImaging(alt)
                 #Check to see if cancelled due to connection loss
                 if BaerocatsCV.Cancel == False:
@@ -353,6 +349,8 @@ elif mode == 'launch':
                 else:
                     Log.Log('Imaging cancelled : Connection Lost \n\t Couldnt Reconnect')
                     break
+                DescentTime = time.time() - DescentTime0
+                Log.Log('Descent Time : ' + str(DescentTime) + 'Seconds')
             
             #Log that imaging is complete
             Log.Log('Image Capture Phase Complete:\n\t \
@@ -370,10 +368,15 @@ BaerocatsCV.CameraShutdown()
 
 Log.Log('Flight Phase 4: Landering') #report to flight log
 
+LandingTime0 = time.time()
+LandingTime = 0
+
 #Landing Detection
-while Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO) == 0:
+while Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO) == 0 or LandingTime > 180:
     Log.Log('Checking for Landering')
     time.sleep(0)
+    LandingTime = time.time() - LandingTime0
+    Log.Log('Landering Time : ' + str(LandingTime) + 'Seconds')
 debugLED(ledGPIO,1)
 
 Log.Log('Landering Detected')    

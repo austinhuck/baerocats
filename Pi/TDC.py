@@ -22,7 +22,7 @@ class TDC:
     # TDC Configuration
     _imuRecord = True
     _gpsRecord = True
-    _lightRecord = True
+    _lightRecord = False # Do Not Change
     _altRecord = True
     
     def __init__(self):
@@ -101,8 +101,6 @@ class TDC:
         # Sample data and build save file string
         sample = str(time.time()-Log.t0) +','
 
-        Log.Log("IMU")
-
         if TDC._imuRecord:
             #Get exclusive access to the IMU and associated data
             with self._imuLock:
@@ -122,7 +120,6 @@ class TDC:
             if TDC._gpsRecord or TDC._lightRecord or TDC._altRecord:
                 sample+=","
 
-        Log.Log("GPS")
         if TDC._gpsRecord:
             #Get exclusive access to the GPS and associated data
             with self._gpsLock:
@@ -132,7 +129,6 @@ class TDC:
             if TDC._lightRecord or TDC._altRecord:
                 sample+=","
 
-        Log.Log("Light")
         if TDC._lightRecord:
             #Get exclusive access to the light sensor and associated data
             with self._lightLock:
@@ -144,7 +140,6 @@ class TDC:
             if TDC._altRecord:
                 sample+=","
 
-        Log.Log("Altitude")
         if TDC._altRecord:
             #Get exclusive access to the altimeter and associated data
             with self._altLock:
@@ -159,13 +154,10 @@ class TDC:
         return sample + os.linesep
 
     def _GpsWorker(self):
-        Log.Log("Enter GPS Thread")
         while not self._gpsStopEvent.isSet():
-            Log.Log("GPS Loop")
             try:
                 sample = self._gps.next()
                 if sample['class'] == 'TPV':
-                    Log.Log("Enter GPS Lock")
                     with self._gpsLock:
                         # TODO: Sync pi system time
                         if hasattr(sample, 'time'):
@@ -182,16 +174,13 @@ class TDC:
                             self._latitude = sample.lat
                         if hasattr(sample, 'lon'):
                             self._longitude = sample.lon
-                    Log.Log("Exit GPS Lock")
             except Exception as e:
                 Log.Log(str(e))
-        Log.Log("Exit GPS Thread")
 
     def _IsRecording(self):
         return not self._tdcStopEvent.isSet() and self._tdcThread.isAlive()
 
     def _RadioWorker(self):
-        Log.Log("Enter Radio Thread")
         while not self._radioStopEvent.isSet():
             try:
                 msg = Transmitting.DataMessage(\
@@ -205,7 +194,6 @@ class TDC:
                 self._radioStopEvent.wait(1)
             except Exception as e:
                 Log.Log("Error transmitting data message: " + e.message)
-        Log.Log("Exit Radio Thread")
 
     def _ReadAccel(self):
         try:
@@ -257,14 +245,13 @@ class TDC:
     def _ReadRot(self):
         try:
             #wx, wy, wz - rotation in radians/second
-            self._rotrateX, self._rotrateY, self._rotrateZ = [x * 3.14159 / 180 for x in self._bno.read_gyroscope()]
+            self._rotrateX, self._rotrateY, self._rotrateZ = self._bno.read_gyroscope()
             self._imuValid = True
         except Exception as e:
             Log.Log("Error reading rotation rates from IMU: " + e.message)
             self._imuValid = False
         
     def _TdcWorker(self):
-        Log.Log("Enter TDC Thread")
         try:
             #Open up the output file and print the header
             self._dataFile = open(self._dataFilePath, 'w+')
@@ -279,27 +266,21 @@ class TDC:
 
             #Continue collecting data as long as we're not signaled to stop
             while not self._tdcStopEvent.isSet():
-                Log.Log("Get Sample String")
                 dataString = self._GetSampleString()
-                Log.Log("Write to file")
                 self._dataFile.write(dataString)
-                Log.Log("Wait Stop Event")
                 self._tdcStopEvent.wait(self._interval)
         except Exception as e:
             Log.Log(str(e))
         finally:
-            Log.Log("Close Output File")
             #Always close the output file
             if self._dataFile is not None:
                 self._dataFile.close()
                 self._dataFile = None
 
-            Log.Log("GPS Join")
             if TDC._gpsRecord:
                 #Always shut down _gpsThread
                 self._gpsStopEvent.set()
                 self._gpsThread.join()
-        Log.Log("Exit TDC Thread")
 
     def Initialize(self):
         # Create output directory
@@ -344,7 +325,7 @@ class TDC:
             if not (self._IsRecording() and TDC._imuRecord):
                 self._ReadAccel()
             return self._accelX, self._accelY, self._accelZ#, self._imuValid
-        
+
     def GetAltitude(self):
         with self._altLock:
             if not (self._IsRecording() and TDC._altRecord):
@@ -357,8 +338,7 @@ class TDC:
 
     def GetLightLevel(self):
         with self._lightLock:
-            if not (self._IsRecording() and TDC._lightRecord):
-                self._ReadLight()
+            self._ReadLight()
             return self._lightLevel#, self._lightSensorValid
 
     def GetOrientation(self):
@@ -379,6 +359,19 @@ class TDC:
                 self._ReadRot()
             return self._rotrateX, self._rotrateY, self._rotrateZ#, self._imuValid
 
+    def GetIMUValid(self):
+        return self._imuValid
+
+    def GetLightValid(self):
+        return self._lightSensorValid
+
+    def GetAltimeterValid(self):
+        return self._altimeterValid
+
+    def GetGpsValid(self):
+        return self._fix
+
+
     def Record(self, interval):
         self._interval = interval
         self._tdcStopEvent.clear()
@@ -390,7 +383,7 @@ class TDC:
     def Stop(self):
         # Flag worker thread to stop and wait for stop
         self._radioStopEvent.set()
-        self._tdcStopEvent.set()
         self._radioThread.join()
+        self._tdcStopEvent.set()
         self._tdcThread.join()
         return not self._tdcThread.isAlive() and not self._radioThread.isAlive()

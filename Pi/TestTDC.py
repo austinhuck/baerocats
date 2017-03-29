@@ -5,10 +5,10 @@ tdc = TDC.TDC()
 
 tdc.Initialize()
 
-tdc.Record(0.5)
+while True:
+    alt = tdc.GetAltitude()
+    print alt
+    #print ((wx**2+wy**2+wz**2)**(.5))
 
-print "Enter Sleep"
-time.sleep(5)
-print "Exit Sleep"
-tdc.Stop()
-print "Stop Done"c
+    #print((wx**2+wy**2+wz**2)**(1/2))
+    time.sleep(0.1)
