@@ -372,7 +372,7 @@ LandingTime0 = time.time()
 LandingTime = 0
 
 #Landing Detection
-while Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO) == 0 or LandingTime > 180:
+while Landing(WThresh,DescRateThresh,BlockSize,SampleRate,ledGPIO) == 0 and LandingTime < 180:
     Log.Log('Checking for Landering')
     time.sleep(0)
     LandingTime = time.time() - LandingTime0

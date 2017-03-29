@@ -35,11 +35,11 @@ class Imaging:
             self.yFOV = 48.8 #degrees
             
         #Binary Mask Settings
-        self.lower_red = np.array([160,100,100], dtype = "uint8")
+        self.lower_red = np.array([160,80,100], dtype = "uint8")
         self.upper_red = np.array([180,255,255], dtype = "uint8")
-        self.lower_blue = np.array([100,100,100], dtype = "uint8")
+        self.lower_blue = np.array([100,80,80], dtype = "uint8")
         self.upper_blue = np.array([120,255,255], dtype = "uint8")
-        self.lower_yellow = np.array([15,100,100], dtype = "uint8")
+        self.lower_yellow = np.array([15,80,100], dtype = "uint8")
         self.upper_yellow = np.array([35,255,255], dtype = "uint8")
         
         #Other
